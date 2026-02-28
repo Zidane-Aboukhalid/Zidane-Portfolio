@@ -1,0 +1,28 @@
+# Node
+node_modules
+npm-debug.log*
+yarn-error.log
+
+# Next.js
+.next
+out
+
+# Dev / CI
+.git
+.gitignore
+.env*.local
+*.md
+*.test.*
+coverage
+.nyc_output
+
+# Editor
+.vscode
+.idea
+*.swp
+
+# Docker / Infra (don't embed infra files in the image)
+Dockerfile*
+docker-compose*
+nginx
+Jenkinsfile
