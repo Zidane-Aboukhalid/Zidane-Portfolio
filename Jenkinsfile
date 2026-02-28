@@ -10,9 +10,21 @@ pipeline {
 
     stage('Deploy') {
       steps {
-        sh 'rm -f /etc/nginx/conf.d/default.conf || true'
-        sh 'docker compose down || true'
-        sh 'docker compose up -d --build'
+        sh '''
+          # ── Install docker-compose v2 if not present ──────────────────────
+          if ! command -v docker-compose > /dev/null 2>&1; then
+            echo "docker-compose not found — installing v2 binary..."
+            curl -SL https://github.com/docker/compose/releases/download/v2.24.5/docker-compose-linux-x86_64 \
+              -o /usr/local/bin/docker-compose
+            chmod +x /usr/local/bin/docker-compose
+            echo "Installed: $(docker-compose version)"
+          fi
+
+          # ── Deploy ────────────────────────────────────────────────────────
+          rm -f /etc/nginx/conf.d/default.conf || true
+          docker-compose down || true
+          docker-compose up -d --build
+        '''
       }
     }
 
@@ -25,7 +37,7 @@ pipeline {
   }
   post {
     always {
-      sh 'docker compose logs || true'
+      sh 'docker-compose logs || true'
     }
 
     success {
