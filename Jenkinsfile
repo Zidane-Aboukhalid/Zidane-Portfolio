@@ -11,8 +11,8 @@ pipeline {
     stage('Deploy') {
       steps {
         sh 'rm -f /etc/nginx/conf.d/default.conf || true'
-        sh 'docker-compose down || true'
-        sh 'docker-compose up -d --build'
+        sh 'docker compose down || true'
+        sh 'docker compose up -d --build'
       }
     }
 
@@ -25,7 +25,7 @@ pipeline {
   }
   post {
     always {
-      sh 'docker-compose logs || true'
+      sh 'docker compose logs || true'
     }
 
     success {
