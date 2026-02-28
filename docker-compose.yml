@@ -2,7 +2,9 @@ version: "3.9"
 
 services:
 
-  # ── Next.js Application ────────────────────────────────────────────────────
+  # ── Next.js Application ──────────────────────────────────────────────────────
+  # Nginx is already running on the VPS host — no containerised proxy needed.
+  # The VPS Nginx proxies port 80/443 → localhost:3000.
   app:
     build:
       context: .
@@ -12,35 +14,19 @@ services:
     restart: unless-stopped
     environment:
       - NODE_ENV=production
+      - NEXT_TELEMETRY_DISABLED=1
       - PORT=3000
-    expose:
-      - "3000" # internal only — Nginx proxies from outside
-    networks:
-      - portfolio_net
-    healthcheck:
-      test: [ "CMD-SHELL", "wget -qO- http://localhost:3000/ || exit 1" ]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 20s
-
-  # ── Nginx Reverse Proxy ────────────────────────────────────────────────────
-  nginx:
-    image: nginx:1.25-alpine
-    container_name: portfolio_nginx
-    restart: unless-stopped
+      - HOSTNAME=0.0.0.0
     ports:
-      - "80:80" # HTTP  (redirect to HTTPS in prod)
-      - "443:443" # HTTPS (mount real certs / use Certbot)
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./nginx/ssl:/etc/nginx/ssl:ro # mount TLS certs here in prod
-    depends_on:
-      app:
-        condition: service_healthy
-    networks:
-      - portfolio_net
+      - "3000:3000" # exposed to host — VPS Nginx proxies to this
+    healthcheck:
+      # curl is available in the node:20-alpine runner; wget may not be
+      test: [ "CMD-SHELL", "curl -fs http://localhost:3000/ > /dev/null || exit 1" ]
+      interval: 30s
+      timeout: 15s
+      retries: 5
+      start_period: 60s # give Next.js enough time to cold-start
 
 networks:
-  portfolio_net:
+  default:
     driver: bridge

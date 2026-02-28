@@ -20,10 +20,16 @@ pipeline {
             echo "Installed: $(docker-compose version)"
           fi
 
-          # ── Deploy ────────────────────────────────────────────────────────
-          rm -f /etc/nginx/conf.d/default.conf || true
+          # ── Deploy Next.js container ──────────────────────────────────────
           docker-compose down || true
           docker-compose up -d --build
+
+          # ── Configure VPS host Nginx to proxy → container:3000 ────────────
+          cp nginx/vps-nginx.conf /etc/nginx/sites-available/portfolio
+          ln -sf /etc/nginx/sites-available/portfolio /etc/nginx/sites-enabled/portfolio
+          # Remove default site if it conflicts with port 80
+          rm -f /etc/nginx/sites-enabled/default || true
+          nginx -t && systemctl reload nginx || true
         '''
       }
     }
