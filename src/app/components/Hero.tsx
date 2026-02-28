@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { startTransition, useEffect, useRef, useState } from 'react';
 
 const TYPING_ROLES = [
     'Full Stack Developer',
@@ -18,7 +18,7 @@ export default function Hero() {
     const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
     useEffect(() => {
-        setVisible(true);
+        startTransition(() => setVisible(true));
     }, []);
 
     useEffect(() => {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { startTransition, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -29,7 +29,7 @@ export default function Navbar() {
 
     // Close menu on route change
     useEffect(() => {
-        setMenuOpen(false);
+        startTransition(() => setMenuOpen(false));
     }, [pathname]);
 
     const isActive = (href: string) =>
