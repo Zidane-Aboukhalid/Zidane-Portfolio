@@ -25,11 +25,20 @@ pipeline {
           docker-compose up -d --build
 
           # ── Configure VPS host Nginx to proxy → container:3000 ────────────
-          cp nginx/vps-nginx.conf /etc/nginx/sites-available/portfolio
-          ln -sf /etc/nginx/sites-available/portfolio /etc/nginx/sites-enabled/portfolio
-          # Remove default site if it conflicts with port 80
-          rm -f /etc/nginx/sites-enabled/default || true
-          nginx -t && systemctl reload nginx || true
+          # Support both Ubuntu (sites-available) and CentOS/Alpine (conf.d)
+          if [ -d /etc/nginx/conf.d ]; then
+            cp nginx/vps-nginx.conf /etc/nginx/conf.d/portfolio.conf
+            echo "Nginx config deployed to conf.d"
+          elif [ -d /etc/nginx/sites-available ]; then
+            mkdir -p /etc/nginx/sites-available /etc/nginx/sites-enabled
+            cp nginx/vps-nginx.conf /etc/nginx/sites-available/portfolio
+            ln -sf /etc/nginx/sites-available/portfolio /etc/nginx/sites-enabled/portfolio
+            rm -f /etc/nginx/sites-enabled/default || true
+            echo "Nginx config deployed to sites-available"
+          else
+            echo "WARNING: Could not find nginx config directory — configure manually"
+          fi
+          nginx -t && systemctl reload nginx || service nginx reload || true
         '''
       }
     }
