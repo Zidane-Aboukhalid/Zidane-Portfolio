@@ -1,9 +1,26 @@
 pipeline {
   agent any
+
+  options {
+    // Only one build runs at a time — new triggers queue up (FIFO), never run in parallel
+    disableConcurrentBuilds(abortPrevious: false)
+  }
+
   stages {
     stage('Checkout code') {
       steps {
-        git(url: 'https://github.com/Zidane-Aboukhalid/Zidane-Portfolio.git', branch: 'main', changelog: true, poll: true, credentialsId: 'token_Jenkins')
+        checkout([
+          $class           : 'GitSCM',
+          branches         : [[name: 'refs/heads/main']],
+          userRemoteConfigs: [[
+            url          : 'https://github.com/Zidane-Aboukhalid/Zidane-Portfolio.git',
+            credentialsId: 'token_Jenkins',
+            refspec      : '+refs/heads/main:refs/remotes/origin/main'
+          ]],
+          extensions       : [
+            [$class: 'CloneOption', noTags: true, shallow: true, depth: 1]
+          ]
+        ])
         sh 'git log -1 --oneline'
       }
     }
@@ -21,7 +38,9 @@ pipeline {
           fi
 
           # ── Deploy Next.js container ──────────────────────────────────────
-          docker-compose down || true
+          docker-compose down --remove-orphans || true
+          # Force-remove the named container in case it is stopped but not yet gone
+          docker rm -f portfolio_app 2>/dev/null || true
           docker-compose up -d --build
 
           # ── Configure VPS host Nginx to proxy → container:3000 ────────────
