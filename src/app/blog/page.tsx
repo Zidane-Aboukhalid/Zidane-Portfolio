@@ -5,136 +5,195 @@ import { blogPosts } from '../lib/data';
 export const metadata: Metadata = { title: 'Blog' };
 
 export default function BlogPage() {
-  return (
-    <div className="pt-16">
-      {/* Page header */}
-      <div className="border-b border-border bg-surface px-6 py-16 text-center">
-        <div className="mx-auto max-w-5xl">
-          <p className="text-xs font-semibold uppercase tracking-widest text-accent">
-            Writing
-          </p>
-          <h1 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            Latest Articles
-          </h1>
-          <p className="mx-auto mt-4 max-w-lg text-sm leading-relaxed text-muted-foreground">
-            Sharing what I learn &mdash; deep dives, tutorials, and thoughts on
-            modern software engineering.
-          </p>
-        </div>
-      </div>
-
-      <div className="px-6 py-20">
-        <div className="mx-auto max-w-5xl">
-          {/* Featured post */}
-          <Link
-            href={`/blog/${blogPosts[0].slug}`}
-            className="group mb-8 block"
-            aria-label={`Read: ${blogPosts[0].title}`}
-          >
-            <article
-              className="blog-featured-card grid overflow-hidden rounded-xl border border-border bg-card transition-all hover:border-border-hover hover:bg-card-hover"
-              style={{ gridTemplateColumns: '200px 1fr' }}
+    return (
+        <div style={{ paddingTop: '68px' }}>
+            {/* Page header */}
+            <div
+                style={{
+                    background: 'linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%)',
+                    borderBottom: '1px solid var(--border-color)',
+                    padding: '64px 0 48px',
+                    textAlign: 'center',
+                }}
             >
-              <div
-                className="relative flex flex-col items-center justify-center gap-3 overflow-hidden p-6"
-                style={{ background: blogPosts[0].gradient }}
-              >
-                <div className="absolute -top-5 -right-5 h-24 w-24 rounded-full bg-white/10" />
-                <span className="relative z-10 text-4xl">
-                  {blogPosts[0].icon}
-                </span>
-                <span className="relative z-10 rounded-full bg-black/25 px-2.5 py-0.5 text-xs font-semibold text-white/90">
-                  Featured
-                </span>
-              </div>
+                <div className="container">
+                    <span className="tech-badge" style={{ marginBottom: '14px' }}>Writing</span>
+                    <h1 className="section-title" style={{ marginTop: '12px' }}>
+                        Latest <span className="gradient-text">Articles</span>
+                    </h1>
+                    <p className="section-subtitle" style={{ margin: '16px auto 0' }}>
+                        Sharing what I learn — deep dives, tutorials, and thoughts on modern software engineering.
+                    </p>
+                </div>
+            </div>
 
-              <div className="flex flex-col justify-center p-6">
-                <div className="flex flex-wrap items-center gap-2 text-xs">
-                  <span className="rounded-full border border-border px-2.5 py-0.5 text-accent font-medium">
-                    {blogPosts[0].category}
-                  </span>
-                  <span className="text-muted-foreground">
-                    {blogPosts[0].date}
-                  </span>
-                  <span className="text-muted-foreground">
-                    {blogPosts[0].readTime}
-                  </span>
-                </div>
-                <h2 className="mt-3 text-lg font-bold text-foreground leading-snug">
-                  {blogPosts[0].title}
-                </h2>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  {blogPosts[0].description}
-                </p>
-                <div className="mt-4 flex items-center gap-1 text-sm font-semibold text-accent">
-                  Read Article
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.5"
-                    className="transition-transform group-hover:translate-x-0.5"
-                  >
-                    <path d="M5 12h14M12 5l7 7-7 7" />
-                  </svg>
-                </div>
-              </div>
-            </article>
-          </Link>
-
-          {/* Remaining posts */}
-          <div className="grid gap-4 sm:grid-cols-2">
-            {blogPosts.slice(1).map((post) => (
-              <Link
-                key={post.slug}
-                href={`/blog/${post.slug}`}
-                className="group flex flex-col overflow-hidden rounded-xl border border-border bg-card transition-all hover:border-border-hover hover:bg-card-hover"
-                aria-label={`Read: ${post.title}`}
-              >
-                <div
-                  className="relative flex h-24 items-center gap-3 overflow-hidden px-5"
-                  style={{ background: post.gradient }}
-                >
-                  <div className="absolute -top-6 -right-6 h-28 w-28 rounded-full bg-white/10" />
-                  <span className="relative z-10 text-2xl">{post.icon}</span>
-                  <span className="relative z-10 rounded-full bg-black/25 px-2.5 py-0.5 text-xs font-semibold text-white/90">
-                    {post.category}
-                  </span>
-                </div>
-                <div className="flex flex-1 flex-col p-5">
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                    <span>{post.date}</span>
-                    <span className="text-border">{'/'}</span>
-                    <span>{post.readTime}</span>
-                  </div>
-                  <h2 className="mt-2 text-sm font-semibold leading-snug text-foreground">
-                    {post.title}
-                  </h2>
-                  <p className="mt-2 flex-1 text-xs leading-relaxed text-muted-foreground">
-                    {post.description}
-                  </p>
-                  <div className="mt-4 flex items-center gap-1 text-xs font-semibold text-accent">
-                    Read More
-                    <svg
-                      width="12"
-                      height="12"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                      className="transition-transform group-hover:translate-x-0.5"
+            <div className="section">
+                <div className="container">
+                    {/* Featured post (first) */}
+                    <Link
+                        href={`/blog/${blogPosts[0].slug}`}
+                        style={{ textDecoration: 'none', display: 'block', marginBottom: '32px' }}
+                        aria-label={`Read: ${blogPosts[0].title}`}
                     >
-                      <path d="M5 12h14M12 5l7 7-7 7" />
-                    </svg>
-                  </div>
+                        <article
+                            className="card blog-featured-card"
+                            style={{
+                                display: 'grid',
+                                gridTemplateColumns: '200px 1fr',
+                                overflow: 'hidden',
+                                borderRadius: '16px',
+                                minHeight: '180px',
+                            }}
+                            role="article"
+                        >
+                            <div
+                                style={{
+                                    background: blogPosts[0].gradient,
+                                    display: 'flex', flexDirection: 'column',
+                                    alignItems: 'center', justifyContent: 'center',
+                                    gap: '12px', padding: '24px',
+                                    position: 'relative', overflow: 'hidden',
+                                }}
+                            >
+                                <div
+                                    style={{
+                                        position: 'absolute', top: '-20px', right: '-20px',
+                                        width: '100px', height: '100px',
+                                        background: 'rgba(255,255,255,0.08)', borderRadius: '50%',
+                                    }}
+                                />
+                                <div style={{ fontSize: '2.8rem', position: 'relative' }}>{blogPosts[0].icon}</div>
+                                <span
+                                    style={{
+                                        background: 'rgba(0,0,0,0.25)',
+                                        color: 'rgba(255,255,255,0.9)',
+                                        padding: '3px 12px', borderRadius: '20px',
+                                        fontSize: '0.75rem', fontWeight: '700',
+                                        position: 'relative',
+                                    }}
+                                >
+                                    Featured
+                                </span>
+                            </div>
+
+                            <div style={{ padding: '28px 32px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+                                    <span className="tech-badge">{blogPosts[0].category}</span>
+                                    <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>{blogPosts[0].date}</span>
+                                    <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>·</span>
+                                    <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>{blogPosts[0].readTime}</span>
+                                </div>
+                                <h2
+                                    style={{
+                                        fontWeight: '800', fontSize: '1.3rem',
+                                        color: 'var(--text-primary)', lineHeight: 1.3,
+                                        marginBottom: '10px', letterSpacing: '-0.01em',
+                                    }}
+                                >
+                                    {blogPosts[0].title}
+                                </h2>
+                                <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: '1.7', marginBottom: '18px' }}>
+                                    {blogPosts[0].description}
+                                </p>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--accent-blue)', fontWeight: '700', fontSize: '0.85rem' }}>
+                                    Read Article
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                        <path d="M5 12h14M12 5l7 7-7 7" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </article>
+                    </Link>
+
+                    {/* Remaining posts */}
+                    <div
+                        style={{
+                            display: 'grid',
+                            gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
+                            gap: '24px',
+                        }}
+                    >
+                        {blogPosts.slice(1).map((post) => (
+                            <Link
+                                key={post.slug}
+                                href={`/blog/${post.slug}`}
+                                style={{ textDecoration: 'none' }}
+                                aria-label={`Read: ${post.title}`}
+                            >
+                                <article
+                                    className="card"
+                                    style={{ overflow: 'hidden', display: 'flex', flexDirection: 'column', height: '100%' }}
+                                >
+                                    {/* Top gradient */}
+                                    <div
+                                        style={{
+                                            height: '100px', background: post.gradient,
+                                            display: 'flex', alignItems: 'center',
+                                            padding: '20px 24px', gap: '16px',
+                                            position: 'relative', overflow: 'hidden',
+                                        }}
+                                    >
+                                        <div
+                                            style={{
+                                                position: 'absolute', top: '-30px', right: '-30px',
+                                                width: '120px', height: '120px',
+                                                background: 'rgba(255,255,255,0.06)', borderRadius: '50%',
+                                            }}
+                                        />
+                                        <div style={{ fontSize: '2.2rem', position: 'relative' }}>{post.icon}</div>
+                                        <span
+                                            style={{
+                                                background: 'rgba(0,0,0,0.25)',
+                                                color: 'rgba(255,255,255,0.9)',
+                                                padding: '4px 12px', borderRadius: '20px',
+                                                fontSize: '0.75rem', fontWeight: '700', position: 'relative',
+                                            }}
+                                        >
+                                            {post.category}
+                                        </span>
+                                    </div>
+
+                                    <div style={{ padding: '24px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                                        <div style={{ display: 'flex', gap: '12px', marginBottom: '12px', alignItems: 'center' }}>
+                                            <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>{post.date}</span>
+                                            <span style={{ color: 'var(--border-color)' }}>·</span>
+                                            <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>{post.readTime}</span>
+                                        </div>
+                                        <h2
+                                            style={{
+                                                fontWeight: '700', fontSize: '1.05rem',
+                                                marginBottom: '10px', lineHeight: 1.3,
+                                                color: 'var(--text-primary)',
+                                            }}
+                                        >
+                                            {post.title}
+                                        </h2>
+                                        <p
+                                            style={{
+                                                color: 'var(--text-secondary)', fontSize: '0.875rem',
+                                                lineHeight: '1.7', marginBottom: '20px', flex: 1,
+                                            }}
+                                        >
+                                            {post.description}
+                                        </p>
+                                        <div
+                                            style={{
+                                                display: 'flex', alignItems: 'center', gap: '6px',
+                                                color: 'var(--accent-blue)', fontWeight: '700', fontSize: '0.85rem',
+                                            }}
+                                        >
+                                            Read More
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                                <path d="M5 12h14M12 5l7 7-7 7" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </article>
+                            </Link>
+                        ))}
+                    </div>
                 </div>
-              </Link>
-            ))}
-          </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 }
