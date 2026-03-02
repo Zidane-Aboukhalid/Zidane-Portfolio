@@ -1,5 +1,3 @@
-'use client';
-
 import Link from 'next/link';
 import type { BlogPost } from '../lib/data';
 
@@ -196,16 +194,7 @@ export default function BlogArticle({
             <p className="mb-8 border-b border-border pb-8 text-base leading-relaxed text-muted-foreground italic">
               {post.description}
             </p>
-            <style jsx>{`
-              :global(.inline-code) {
-                background: rgba(16, 185, 129, 0.1);
-                color: var(--color-accent);
-                padding: 2px 6px;
-                border-radius: 4px;
-                font-family: var(--font-mono);
-                font-size: 0.85em;
-              }
-            `}</style>
+
             {rendered}
           </article>
 

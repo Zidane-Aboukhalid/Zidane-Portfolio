@@ -65,6 +65,16 @@ body {
   color: var(--color-foreground);
 }
 
+/* Inline code in blog articles */
+.inline-code {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--color-accent);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+}
+
 /* Focus ring */
 :focus-visible {
   outline: 2px solid var(--color-accent);
