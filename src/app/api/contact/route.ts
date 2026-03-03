@@ -3,29 +3,29 @@ import nodemailer from 'nodemailer';
 
 // ─── SMTP transporter ─────────────────────────────────────────────────────────
 function createTransporter() {
-    const port = Number(process.env.SMTP_PORT) || 465;
-    // SMTP_SECURE=true for port 465 (SSL), false for port 587 (STARTTLS)
-    const secure = process.env.SMTP_SECURE === 'true' || port === 465;
-    return nodemailer.createTransport({
-        host: process.env.SMTP_HOST,
-        port,
-        secure,
-        auth: {
-            user: process.env.SMTP_USER,
-            // Support both SMTP_PASSWORD and SMTP_PASS
-            pass: process.env.SMTP_PASSWORD ?? process.env.SMTP_PASS,
-        },
-        tls: {
-            rejectUnauthorized: false, // allow self-signed certs on shared hosting
-        },
-    });
+  const port = Number(process.env.SMTP_PORT) || 465;
+  // SMTP_SECURE=true for port 465 (SSL), false for port 587 (STARTTLS)
+  const secure = process.env.SMTP_SECURE === 'true' || port === 465;
+  return nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port,
+    secure,
+    auth: {
+      user: process.env.SMTP_USER,
+      // Support both SMTP_PASSWORD and SMTP_PASS
+      pass: process.env.SMTP_PASSWORD ?? process.env.SMTP_PASS,
+    },
+    tls: {
+      rejectUnauthorized: false, // allow self-signed certs on shared hosting
+    },
+  });
 }
 
 // ─── Email templates ──────────────────────────────────────────────────────────
 
 /** Email YOU receive when someone contacts you */
 function ownerEmailHtml(data: { name: string; email: string; subject: string; message: string }) {
-    return `
+  return `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -149,7 +149,7 @@ function ownerEmailHtml(data: { name: string; email: string; subject: string; me
 
 /** Confirmation email sent to the CLIENT who contacted you */
 function clientConfirmationHtml(data: { name: string; subject: string }) {
-    return `
+  return `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -263,70 +263,100 @@ function clientConfirmationHtml(data: { name: string; subject: string }) {
 // ─── API Route ────────────────────────────────────────────────────────────────
 
 export async function POST(req: NextRequest) {
-    try {
-        const body = await req.json();
-        const { name, email, subject, message } = body as {
-            name: string; email: string; subject: string; message: string;
-        };
+  try {
+    const body = await req.json();
+    const { name, email, subject, message } = body as {
+      name: string; email: string; subject: string; message: string;
+    };
 
-        // Basic validation
-        if (!name?.trim() || !email?.trim() || !subject?.trim() || !message?.trim()) {
-            return NextResponse.json({ error: 'All fields are required.' }, { status: 400 });
-        }
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            return NextResponse.json({ error: 'Invalid email address.' }, { status: 400 });
-        }
-        if (message.trim().length < 10) {
-            return NextResponse.json({ error: 'Message is too short.' }, { status: 400 });
-        }
-
-        // ── Dev mode: skip SMTP, just log to terminal ─────────────────────────
-        if (process.env.NODE_ENV !== 'production') {
-            console.log('\n========================================');
-            console.log('📧 [DEV] Contact form submission (not sent via SMTP):');
-            console.log(`   From   : ${name} <${email}>`);
-            console.log(`   Subject: ${subject}`);
-            console.log(`   Message: ${message}`);
-            console.log('========================================\n');
-            return NextResponse.json({ success: true });
-        }
-
-        // ── Production: send via real SMTP ────────────────────────────────────
-        const transporter = createTransporter();
-        await transporter.verify();
-
-        const fromField = process.env.SMTP_FROM ?? `"Zidane Aboukhalid" <${process.env.SMTP_USER}>`;
-        // Support both SMTP_TO and CONTACT_TO
-        const toField = process.env.SMTP_TO ?? process.env.CONTACT_TO ?? process.env.SMTP_USER!;
-
-        // 1️⃣  Notify YOU
-        await transporter.sendMail({
-            from: fromField,
-            to: toField,
-            replyTo: `"${name}" <${email}>`,
-            subject: `[Portfolio] ${subject}`,
-            html: ownerEmailHtml({ name, email, subject, message }),
-            headers: {
-                'X-Priority': '1',
-                'X-Mailer': 'Zidane Portfolio',
-            },
-        });
-
-        // 2️⃣  Confirm to CLIENT
-        await transporter.sendMail({
-            from: fromField,
-            to: `"${name}" <${email}>`,
-            subject: `Message Received — I'll be in touch soon! | Zidane Aboukhalid`,
-            html: clientConfirmationHtml({ name, subject }),
-        });
-
-        return NextResponse.json({ success: true });
-    } catch (err) {
-        console.error('[contact/route] SMTP error:', err);
-        return NextResponse.json(
-            { error: 'Failed to send message. Please try again or email me directly.' },
-            { status: 500 }
-        );
+    // Basic validation
+    if (!name?.trim() || !email?.trim() || !subject?.trim() || !message?.trim()) {
+      return NextResponse.json({ error: 'All fields are required.' }, { status: 400 });
     }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return NextResponse.json({ error: 'Invalid email address.' }, { status: 400 });
+    }
+    if (message.trim().length < 10) {
+      return NextResponse.json({ error: 'Message is too short.' }, { status: 400 });
+    }
+
+    // ── Dev mode: skip SMTP, just log to terminal ─────────────────────────
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('\n========================================');
+      console.log('📧 [DEV] Contact form submission (not sent via SMTP):');
+      console.log(`   From   : ${name} <${email}>`);
+      console.log(`   Subject: ${subject}`);
+      console.log(`   Message: ${message}`);
+      console.log('========================================\n');
+      return NextResponse.json({ success: true });
+    }
+
+    // ── Production: send via real SMTP ────────────────────────────────────
+    const transporter = createTransporter();
+    await transporter.verify();
+
+    // Use bare address as From to match SMTP auth user exactly (avoids spoofing flags)
+    const smtpUser = process.env.SMTP_USER!;
+    const fromField = `Zidane Aboukhalid <${smtpUser}>`;
+    const toField = process.env.SMTP_TO ?? process.env.CONTACT_TO ?? smtpUser;
+
+    // 1️⃣  Notify YOU — plain-text + HTML for best deliverability
+    await transporter.sendMail({
+      envelope: { from: smtpUser, to: toField }, // Return-Path = From (no mismatch)
+      from: fromField,
+      to: toField,
+      replyTo: `${name} <${email}>`,             // Reply goes to the sender
+      subject: `New contact from ${name}: ${subject}`,
+      // Plain-text version (required to avoid spam — never send HTML-only)
+      text: [
+        `New message from your portfolio contact form`,
+        ``,
+        `Name   : ${name}`,
+        `Email  : ${email}`,
+        `Subject: ${subject}`,
+        ``,
+        `Message:`,
+        message,
+        ``,
+        `---`,
+        `Sent from aboukhalid-zidane.com`,
+      ].join('\n'),
+      html: ownerEmailHtml({ name, email, subject, message }),
+    });
+
+    // 2️⃣  Confirm to CLIENT — plain-text + HTML
+    await transporter.sendMail({
+      envelope: { from: smtpUser, to: email },
+      from: fromField,
+      to: `${name} <${email}>`,
+      subject: `I received your message — talk soon! | Zidane Aboukhalid`,
+      text: [
+        `Hi ${name},`,
+        ``,
+        `Thank you for reaching out! I received your message about:`,
+        `"${subject}"`,
+        ``,
+        `I will get back to you within 24 hours.`,
+        ``,
+        `In the meantime, feel free to connect with me on LinkedIn:`,
+        `https://linkedin.com/in/zidane-aboukhalid`,
+        ``,
+        `Best regards,`,
+        `Zidane Aboukhalid`,
+        `Full Stack Developer`,
+        `contact@aboukhalid-zidane.com`,
+        `https://aboukhalid-zidane.com`,
+      ].join('\n'),
+      html: clientConfirmationHtml({ name, subject }),
+    });
+
+    return NextResponse.json({ success: true });
+  } catch (err) {
+    console.error('[contact/route] SMTP error:', err);
+    return NextResponse.json(
+      { error: 'Failed to send message. Please try again or email me directly.' },
+      { status: 500 }
+    );
+  }
 }
 
