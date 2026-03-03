@@ -1,6 +1,17 @@
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = { title: 'About' };
+export const metadata: Metadata = {
+    title: 'About Me',
+    description:
+        'Learn about Zidane Aboukhalid — Full Stack Developer based in Casablanca, Morocco. 3+ years experience with ASP.NET Core, React, Blazor, Docker, and CI/CD across 4 companies.',
+    keywords: ['Zidane Aboukhalid About', 'Full Stack Developer Morocco', 'ASP.NET Core Developer', 'React Developer Casablanca'],
+    alternates: { canonical: 'https://aboukhalid-zidane.com/about' },
+    openGraph: {
+        title: 'About Zidane Aboukhalid — Full Stack Developer',
+        description: '3+ years experience with ASP.NET Core, React, Blazor, Docker, and CI/CD across 4 companies in Casablanca.',
+        url: 'https://aboukhalid-zidane.com/about',
+    },
+};
 
 const skills = [
     { name: 'ASP.NET Core / C#', level: 92, icon: '⚡', color: '#a855f7' },

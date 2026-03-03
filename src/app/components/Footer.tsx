@@ -77,8 +77,16 @@ export default function Footer() {
                                 marginBottom: '6px',
                             }}
                         >
-                            <span className="gradient-text">Z</span>
-                            <span style={{ color: 'var(--text-primary)' }}>idane.</span>
+                            <span
+                                style={{
+                                    background: 'linear-gradient(90deg, var(--accent-blue), var(--accent-cyan))',
+                                    WebkitBackgroundClip: 'text',
+                                    WebkitTextFillColor: 'transparent',
+                                    backgroundClip: 'text',
+                                }}
+                            >
+                                Zidane Aboukhalid
+                            </span>
                         </Link>
                         <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>
                             Full Stack Developer · .NET · React · DevOps
@@ -147,7 +155,7 @@ export default function Footer() {
                     }}
                 >
                     <p style={{ color: 'var(--text-muted)', fontSize: '0.82rem' }}>
-                        © {year} Zidane. All rights reserved.
+                        © {year} aboukhalid-zidane.com. All rights reserved.
                     </p>
                     <p
                         style={{

@@ -11,24 +11,92 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://aboukhalid-zidane.com'),
   title: {
-    template: '%s | Zidane — Full Stack Developer',
-    default: 'Zidane — Full Stack Developer',
+    template: '%s | Zidane Aboukhalid — Full Stack Developer',
+    default: 'Zidane Aboukhalid — Full Stack .NET & React Developer',
   },
   description:
-    'Full Stack Developer specialising in .NET, React, Next.js, and DevOps. Building scalable, modern web applications with clean, performant code.',
-  keywords: ['Full Stack Developer', '.NET', 'React', 'Next.js', 'DevOps', 'TypeScript', 'Portfolio'],
-  openGraph: {
-    title: 'Zidane — Full Stack Developer',
-    description: 'Full Stack Developer specialising in .NET, React, Next.js, and DevOps.',
-    type: 'website',
+    'Zidane Aboukhalid — Full Stack Developer based in Casablanca, Morocco. Specialising in ASP.NET Core, React, Blazor, Docker, and CI/CD. 3+ years building scalable, production-grade web applications.',
+  keywords: [
+    'Zidane Aboukhalid',
+    'Aboukhalid Zidane',
+    'Full Stack Developer Casablanca',
+    'ASP.NET Core Developer',
+    'React Developer Morocco',
+    '.NET Developer',
+    'Blazor Developer',
+    'DevOps Engineer Morocco',
+    'Portfolio Developer',
+    'TypeScript',
+    'Docker Jenkins',
+  ],
+  authors: [{ name: 'Zidane Aboukhalid', url: 'https://aboukhalid-zidane.com' }],
+  creator: 'Zidane Aboukhalid',
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
+  alternates: {
+    canonical: 'https://aboukhalid-zidane.com',
+  },
+  openGraph: {
+    type: 'website',
+    url: 'https://aboukhalid-zidane.com',
+    siteName: 'Zidane Aboukhalid — Portfolio',
+    title: 'Zidane Aboukhalid — Full Stack .NET & React Developer',
+    description:
+      'Full Stack Developer based in Casablanca, Morocco. Building production-grade apps with ASP.NET Core, React, Blazor, Docker and CI/CD pipelines.',
+    locale: 'en_US',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Zidane Aboukhalid — Full Stack Developer',
+    description:
+      'Full Stack Developer based in Casablanca. ASP.NET Core, React, Blazor, Docker, CI/CD.',
+    creator: '@zidane_aboukhalid',
+  },
+};
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Zidane Aboukhalid',
+  url: 'https://aboukhalid-zidane.com',
+  jobTitle: 'Full Stack Developer',
+  description:
+    'Full Stack Developer specialising in ASP.NET Core, React, Blazor, Docker, and CI/CD. Based in Casablanca, Morocco.',
+  email: 'contact@aboukhalid-zidane.com',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Casablanca',
+    addressCountry: 'MA',
+  },
+  sameAs: [
+    'https://linkedin.com/in/zidane-aboukhalid',
+    'https://github.com/zidane-aboukhalid',
+  ],
+  knowsAbout: [
+    'ASP.NET Core', 'React.js', 'Blazor', 'C#', 'Docker',
+    'Jenkins', 'CQRS', 'Microservices', 'TypeScript',
+  ],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={inter.variable}>
       <body className="antialiased">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <div className="noise-overlay" aria-hidden="true" />
         <Navbar />
         <main>{children}</main>

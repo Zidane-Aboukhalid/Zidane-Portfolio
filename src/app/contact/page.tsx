@@ -1,7 +1,18 @@
 import type { Metadata } from 'next';
 import ContactForm from '../components/ContactForm';
 
-export const metadata: Metadata = { title: 'Contact' };
+export const metadata: Metadata = {
+    title: 'Contact',
+    description:
+        'Get in touch with Zidane Aboukhalid — Full Stack Developer open to full-time roles and freelance projects. Based in Casablanca, Morocco.',
+    keywords: ['Contact Zidane Aboukhalid', 'Hire Full Stack Developer Morocco', 'Freelance .NET Developer'],
+    alternates: { canonical: 'https://aboukhalid-zidane.com/contact' },
+    openGraph: {
+        title: 'Contact — Zidane Aboukhalid',
+        description: 'Open to full-time roles and freelance projects. Let\'s build something great together.',
+        url: 'https://aboukhalid-zidane.com/contact',
+    },
+};
 
 const socialLinks = [
     {

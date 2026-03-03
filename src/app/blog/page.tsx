@@ -2,7 +2,18 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { blogPosts } from '../lib/data';
 
-export const metadata: Metadata = { title: 'Blog' };
+export const metadata: Metadata = {
+    title: 'Blog',
+    description:
+        'Technical articles by Zidane Aboukhalid — deep dives into .NET, CQRS, Blazor, SignalR, Docker, and modern software engineering.',
+    keywords: ['Zidane Aboukhalid Blog', '.NET Articles', 'ASP.NET Core Tutorial', 'CQRS Blazor SignalR'],
+    alternates: { canonical: 'https://aboukhalid-zidane.com/blog' },
+    openGraph: {
+        title: 'Blog — Zidane Aboukhalid',
+        description: 'Deep dives into .NET, CQRS, Blazor, SignalR, Docker, and modern software engineering.',
+        url: 'https://aboukhalid-zidane.com/blog',
+    },
+};
 
 export default function BlogPage() {
     return (

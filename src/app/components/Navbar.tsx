@@ -57,8 +57,16 @@ export default function Navbar() {
                             letterSpacing: '-0.02em',
                         }}
                     >
-                        <span className="gradient-text">Z</span>
-                        <span style={{ color: 'var(--text-primary)' }}>idane.</span>
+                        <span
+                            style={{
+                                background: 'linear-gradient(90deg, var(--accent-blue), var(--accent-cyan))',
+                                WebkitBackgroundClip: 'text',
+                                WebkitTextFillColor: 'transparent',
+                                backgroundClip: 'text',
+                            }}
+                        >
+                            Zidane Aboukhalid
+                        </span>
                     </Link>
 
                     {/* Desktop Nav */}

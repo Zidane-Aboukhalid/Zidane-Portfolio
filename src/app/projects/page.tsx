@@ -2,7 +2,18 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { projects } from '../lib/data';
 
-export const metadata: Metadata = { title: 'Projects' };
+export const metadata: Metadata = {
+    title: 'Projects',
+    description:
+        'Explore projects by Zidane Aboukhalid — production-grade full-stack, backend, and DevOps work spanning ASP.NET Core, React, Blazor, Docker, and CI/CD pipelines.',
+    keywords: ['Zidane Aboukhalid Projects', '.NET Projects', 'React Projects', 'Full Stack Portfolio'],
+    alternates: { canonical: 'https://aboukhalid-zidane.com/projects' },
+    openGraph: {
+        title: 'Projects — Zidane Aboukhalid',
+        description: 'Production-grade full-stack projects: ASP.NET Core APIs, React UIs, Blazor apps, Docker deployments.',
+        url: 'https://aboukhalid-zidane.com/projects',
+    },
+};
 
 const categories = ['All', 'Full Stack', 'Backend', 'Desktop', 'Mobile'] as const;
 
