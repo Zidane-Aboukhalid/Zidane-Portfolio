@@ -3,37 +3,44 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = { title: 'About' };
 
 const skills = [
-    { name: '.NET / C#', level: 90, icon: '⚡', color: '#a855f7' },
-    { name: 'React.js', level: 88, icon: '⚛️', color: '#06b6d4' },
-    { name: 'Next.js', level: 85, icon: '▲', color: '#e2e8f0' },
-    { name: 'TypeScript', level: 83, icon: '🔷', color: '#3b82f6' },
-    { name: 'DevOps / Docker', level: 78, icon: '🐳', color: '#06b6d4' },
-    { name: 'Tailwind CSS', level: 90, icon: '🎨', color: '#38bdf8' },
-    { name: 'PostgreSQL / SQL', level: 80, icon: '🗄️', color: '#f59e0b' },
-    { name: 'Git / CI/CD', level: 85, icon: '🔀', color: '#f97316' },
+    { name: 'ASP.NET Core / C#', level: 92, icon: '⚡', color: '#a855f7' },
+    { name: 'React.js / JavaScript', level: 88, icon: '⚛️', color: '#06b6d4' },
+    { name: 'Blazor Server', level: 80, icon: '🔵', color: '#3b82f6' },
+    { name: 'SQL Server / MySQL', level: 82, icon: '🗄️', color: '#f59e0b' },
+    { name: 'Docker / Jenkins', level: 80, icon: '🐳', color: '#06b6d4' },
+    { name: 'Microservices / CQRS', level: 85, icon: '🏗️', color: '#8b5cf6' },
+    { name: 'Azure DevOps / CI/CD', level: 78, icon: '☁️', color: '#3b82f6' },
+    { name: 'Git / GitHub', level: 90, icon: '🔀', color: '#f97316' },
 ];
 
 const experiences = [
     {
-        title: 'Full Stack Developer Intern',
-        company: 'Tech Innovations Co.',
-        period: '2023 – 2024',
-        desc: 'Built REST APIs with ASP.NET Core and React dashboards. Deployed to Azure with Docker and GitHub Actions CI/CD pipelines.',
+        title: '.NET Developer — Back-End Developer',
+        company: 'Unibitsoft · Casablanca',
+        period: 'Aug 2025 – Present',
+        desc: 'Developed a CMMS (Computerized Maintenance Management System) using ASP.NET Core 8 Web API. Designed RESTful endpoints following Clean Architecture. Built core modules: work orders, asset management, and preventive maintenance scheduling.',
+        color: '#a855f7',
+    },
+    {
+        title: 'Full-Stack Developer — .NET Core · React · Blazor Server',
+        company: 'Telco Solution · Casablanca',
+        period: 'Jun 2024 – Aug 2025',
+        desc: 'Built Web APIs synchronized with Odoo ERP. Implemented microservices with CQRS pattern. Created a real-time recruitment platform (Blazor Server + SignalR). Developed a call-center app with React.js + MUI. Deployed with Docker + Jenkins CI/CD on VPS.',
         color: '#3b82f6',
     },
     {
-        title: 'Frontend Developer',
-        company: 'Startup Labs',
-        period: '2022 – 2023',
-        desc: 'Developed responsive UIs with React + TypeScript. Implemented state management with Zustand and unit testing with Vitest.',
+        title: 'Full-Stack Developer — .NET Core · Razor Pages',
+        company: 'Perfect Shore (Pixel IQ – CRM CEE) · Casablanca',
+        period: 'Feb 2024 – May 2024',
+        desc: 'Developed and maintained a CRM system. Created dynamic pages with ASP.NET Razor Pages. Designed and optimized databases using SQL Server 2019. Collaborated on feature implementation and bug fixes based on user feedback.',
         color: '#06b6d4',
     },
     {
-        title: 'Freelance Developer',
-        company: 'Self-employed',
-        period: '2021 – Present',
-        desc: 'Delivered 10+ client projects: e-commerce sites, SaaS dashboards, REST APIs, and CI/CD pipeline setup.',
-        color: '#8b5cf6',
+        title: 'Full-Stack Developer — .NET / React',
+        company: 'JobInTech Bootcamp · UIR, Maroc',
+        period: 'Oct 2023 – Feb 2024',
+        desc: 'Contributed to the Moroccan Microsoft Community platform (ASP.NET Core + React). Applied Clean Architecture, CQRS with MediatR, and microservices. CI/CD deployment on Azure DevOps. Also built UIR Shop e-commerce app and Trip Buddy mobile app.',
+        color: '#10b981',
     },
 ];
 
@@ -62,7 +69,7 @@ export default function AboutPage() {
                         Passionate About <span className="gradient-text">Building Things</span>
                     </h1>
                     <p className="section-subtitle" style={{ margin: '16px auto 0' }}>
-                        Full Stack Developer with 3+ years crafting production-ready web applications.
+                        Full Stack Developer specializing in React &amp; .NET, with nearly 3 years of experience building high-performance web interfaces and back-end systems.
                     </p>
                 </div>
             </div>
@@ -99,13 +106,13 @@ export default function AboutPage() {
                                     My Background
                                 </h2>
                                 <p style={{ color: 'var(--text-secondary)', lineHeight: '1.85', marginBottom: '14px', fontSize: '0.95rem' }}>
-                                    I&apos;m a Full Stack Developer with 3+ years of experience delivering production-ready
-                                    web applications. My expertise spans backend (.NET Core, Node.js), frontend (React,
-                                    Next.js), and infrastructure (Docker, Kubernetes, Azure).
+                                    I&apos;m a Full Stack Developer specializing in React and .NET, with nearly 3 years
+                                    of experience building high-performance web interfaces and integrating back-end systems.
+                                    Experienced in demanding technical environments including industrial and microservices contexts.
                                 </p>
                                 <p style={{ color: 'var(--text-secondary)', lineHeight: '1.85', fontSize: '0.95rem' }}>
-                                    I thrive on complex engineering challenges, enjoy contributing to open source, and
-                                    stay current with the ever-evolving web ecosystem.
+                                    Serious, autonomous, and quality-oriented — I thrive on complex engineering challenges
+                                    and stay current with the ever-evolving web ecosystem.
                                 </p>
                             </div>
 

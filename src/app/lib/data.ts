@@ -8,7 +8,7 @@ export interface Project {
     technologies: string[];
     liveUrl: string | null;
     githubUrl: string;
-    category: 'Full Stack' | 'DevOps' | 'Backend';
+    category: 'Full Stack' | 'DevOps' | 'Backend' | 'Desktop' | 'Mobile';
     icon: string;
     gradient: string;
     featured: boolean;
@@ -18,118 +18,137 @@ export interface Project {
 
 export const projects: Project[] = [
     {
-        id: 'devflow',
-        title: 'DevFlow — Project Management SaaS',
+        id: 'mmc-community',
+        title: 'MMC – Moroccan Microsoft Community',
         shortDesc:
-            'A full-featured project management tool with real-time collaboration, kanban boards, sprint planning, and analytics dashboards.',
+            'Full-stack community platform built with ASP.NET Core + React using clean architecture, CQRS, microservices, and Azure DevOps CI/CD.',
         longDesc:
-            'DevFlow is an enterprise-grade project management platform built with a microservices architecture. It features real-time collaboration via SignalR WebSockets, a fully customisable Kanban board with drag-and-drop, sprint planning with velocity tracking, and richly rendered analytics dashboards using Recharts.',
-        technologies: ['Next.js', 'ASP.NET Core', 'SignalR', 'PostgreSQL', 'Docker', 'Azure', 'Redis', 'TypeScript'],
-        liveUrl: 'https://github.com',
-        githubUrl: 'https://github.com',
+            'During the JobInTech Bootcamp at UIR, I contributed to the Moroccan Microsoft Community (MMC) platform — a large-scale web application for managing community events, members, and resources. The backend was built with ASP.NET Core following Clean Architecture, implementing CQRS with MediatR, the Repository Pattern, and organized as microservices. The frontend was built with React. CI/CD was managed via Azure DevOps deploying to Azure Web App.',
+        technologies: ['ASP.NET Core', 'React', 'CQRS', 'MediatR', 'Entity Framework', 'SQL Server', 'Azure DevOps', 'Microservices'],
+        liveUrl: null,
+        githubUrl: 'https://github.com/Zidane-Aboukhalid',
         category: 'Full Stack',
-        icon: '📋',
+        icon: '🇲🇦',
         gradient: 'linear-gradient(135deg, #3b82f6, #8b5cf6)',
         featured: true,
         challenges:
-            'Designing a real-time concurrency model that handles simultaneous card moves by multiple users without race conditions. Solved using optimistic UI updates backed by event-sourcing on the server.',
+            'Organising a complex domain across microservices while keeping the CI/CD pipeline reliable on Azure DevOps. Chose CQRS + MediatR to decouple reads from writes and simplify command handling.',
         outcome:
-            'Achieved <50ms latency on card updates, supporting 200+ concurrent users per workspace in staging load tests.',
+            'Successfully delivered a production-ready community platform with zero-downtime deployments on Azure and clean modular codebase adopted by the MMC team.',
     },
     {
-        id: 'shopflow',
-        title: 'ShopFlow — E-Commerce Platform',
+        id: 'cmms-unibitsoft',
+        title: 'CMMS – Computerized Maintenance Management System',
         shortDesc:
-            'High-performance e-commerce platform with AI-powered recommendations, Stripe payments, and a full admin dashboard.',
+            'Enterprise-grade CMMS built with ASP.NET Core 8 Web API for work orders, asset management, and preventive maintenance scheduling.',
         longDesc:
-            'ShopFlow delivers a blazing-fast shopping experience powered by Next.js server components for SEO-optimised product pages. The platform integrates Stripe Checkout with webhook fulfilment, Cloudinary for optimised product images, and a TipTap-powered product description editor in the admin panel.',
-        technologies: ['Next.js', 'TypeScript', 'Prisma', 'PostgreSQL', 'Stripe', 'Cloudinary', 'Tailwind CSS'],
-        liveUrl: 'https://github.com',
-        githubUrl: 'https://github.com',
+            'At Unibitsoft, I developed a CMMS system from the ground up using ASP.NET Core 8 Web API. The system handles work orders, asset lifecycle management, and preventive maintenance scheduling for industrial clients. I designed all RESTful API endpoints following Clean Architecture and best practices, structuring core modules for scalability and maintainability.',
+        technologies: ['ASP.NET Core 8', 'REST API', 'Clean Architecture', 'Entity Framework', 'SQL Server', 'C#'],
+        liveUrl: null,
+        githubUrl: 'https://github.com/Zidane-Aboukhalid',
+        category: 'Backend',
+        icon: '🏭',
+        gradient: 'linear-gradient(135deg, #f59e0b, #ef4444)',
+        featured: true,
+        challenges:
+            'Designing a flexible scheduling engine for preventive maintenance that handles recurring tasks, asset dependencies, and technician availability without tight coupling.',
+        outcome:
+            'Delivered a maintainable and scalable backend system currently in active production use at Unibitsoft for industrial maintenance management.',
+    },
+    {
+        id: 'uir-shop',
+        title: 'UIR Shop – E-Commerce Web Application',
+        shortDesc:
+            'Complete e-commerce application with ASP.NET Core backend and React frontend, using CQRS, mediator pattern, and Entity Framework with SQL Server.',
+        longDesc:
+            'UIR Shop is a full-stack e-commerce platform built during the JobInTech Bootcamp at UIR. The backend uses ASP.NET Core with a clean layered architecture, CQRS pattern implemented with MediatR, and Entity Framework Core for database access on SQL Server. The React frontend provides a smooth shopping experience with product listings, cart management, and order tracking.',
+        technologies: ['ASP.NET Core', 'React', 'CQRS', 'MediatR', 'Entity Framework', 'SQL Server', 'Clean Architecture'],
+        liveUrl: null,
+        githubUrl: 'https://github.com/Zidane-Aboukhalid',
         category: 'Full Stack',
         icon: '🛒',
         gradient: 'linear-gradient(135deg, #06b6d4, #3b82f6)',
         featured: true,
         challenges:
-            'Implementing incremental static regeneration (ISR) for thousands of product pages while keeping inventory data fresh. Used on-demand revalidation triggered by a CMS webhook.',
+            'Keeping product inventory consistent across concurrent orders. Used optimistic concurrency checks in EF Core and transactional CQRS commands to prevent overselling.',
         outcome:
-            'Core Web Vitals score of 98/100. Page load under 1.2 s for product pages. Checkout conversion improved by 23% versus the legacy platform.',
+            'A fully functional e-commerce platform showcasing clean architecture patterns with proper separation of concerns between UI, application logic, and data access.',
     },
     {
-        id: 'cloudsync',
-        title: 'CloudSync — DevOps Dashboard',
+        id: 'telco-recruitment',
+        title: 'Recruitment Platform – Blazor Server + SignalR',
         shortDesc:
-            'Unified DevOps monitoring dashboard aggregating metrics from AWS, Azure, GCP, and CI/CD pipelines.',
+            'Real-time recruitment platform built with Blazor Server and SignalR, synchronized with Odoo ERP via Web API.',
         longDesc:
-            'CloudSync polls metrics from multiple cloud providers via their SDKs and normalises them into a unified data model. A React frontend built with Recharts provides time-series charts, alert timelines, and deployment heat-maps. The backend is a .NET 8 Web API containerised with Docker and orchestrated by Kubernetes.',
-        technologies: ['React', '.NET Core', 'Docker', 'Kubernetes', 'AWS SDK', 'Azure SDK', 'Recharts'],
+            'At Telco Solution, I built a full-featured recruitment platform using Blazor Server for the interactive UI and SignalR for real-time notifications (new applications, interview updates). The backend Web APIs were synchronized with Odoo ERP to manage candidate data and HR workflows. The system was deployed on a VPS using Docker with Jenkins CI/CD pipelines.',
+        technologies: ['Blazor Server', 'SignalR', 'ASP.NET Core', 'React.js', 'MUI', 'Docker', 'Jenkins', 'Odoo ERP API'],
         liveUrl: null,
-        githubUrl: 'https://github.com',
-        category: 'DevOps',
-        icon: '☁️',
+        githubUrl: 'https://github.com/Zidane-Aboukhalid',
+        category: 'Full Stack',
+        icon: '💼',
         gradient: 'linear-gradient(135deg, #8b5cf6, #ec4899)',
         featured: false,
         challenges:
-            'Normalising heterogeneous metric schemas from three cloud providers into a single query model without losing provider-specific semantics.',
+            'Synchronising real-time Blazor UI state with Odoo ERP data while keeping latency low. Used SignalR hubs to broadcast ERP events and optimistic UI updates.',
         outcome:
-            'Reduced mean time to detect (MTTD) for infrastructure incidents from 18 min to under 4 min in a 12-team pilot.',
+            'Reduced recruitment workflow processing time significantly. The Jenkins + Docker pipeline enabled seamless zero-downtime deployments on VPS.',
     },
     {
-        id: 'authkit',
-        title: 'AuthKit — Authentication Microservice',
+        id: 'barbershop-management',
+        title: 'Barbershop Management – Windows Form App',
         shortDesc:
-            'Plug-and-play authentication microservice: OAuth2, JWT, MFA, and session management for enterprise apps.',
+            'Desktop application built with C# / .NET Framework for reservation, billing, and inventory management, backed by SQL Server.',
         longDesc:
-            'AuthKit is a production-ready identity microservice built on ASP.NET Core Identity. It ships with PKCE-enabled OAuth2 flows, short-lived JWTs with Redis-backed refresh token rotation, TOTP/FIDO2 MFA, and a self-service admin console. Exposes both REST and gRPC endpoints.',
-        technologies: ['.NET Core', 'ASP.NET Identity', 'Redis', 'PostgreSQL', 'Docker', 'JWT', 'OAuth2', 'gRPC'],
+            'A comprehensive Windows Forms desktop application for barbershop management, covering appointment reservations, customer billing, service management, and inventory tracking. Built with C# and .NET Framework, it uses SQL Server as the data store and provides an intuitive UI for receptionist and manager roles with role-based access control.',
+        technologies: ['C#', '.NET Framework', 'Windows Forms', 'SQL Server', 'ADO.NET'],
         liveUrl: null,
-        githubUrl: 'https://github.com',
-        category: 'Backend',
-        icon: '🔐',
-        gradient: 'linear-gradient(135deg, #f59e0b, #ef4444)',
-        featured: false,
-        challenges:
-            'Implementing token rotation in a distributed environment without introducing session fixation vulnerabilities.',
-        outcome:
-            'Successfully handles 5 000 auth requests/sec under load testing with p99 latency of 12 ms.',
-    },
-    {
-        id: 'blogcms',
-        title: 'BlogCMS — Headless Content Platform',
-        shortDesc:
-            'Modern headless CMS with rich-text editing, image optimisation, SEO management, and multi-language support.',
-        longDesc:
-            'BlogCMS provides content teams with a great editing experience (TipTap rich-text, drag-and-drop media) while giving developers a clean REST + GraphQL API. Built with the Next.js App Router, Prisma ORM, and deployable to Vercel in one click.',
-        technologies: ['Next.js', 'Prisma', 'PostgreSQL', 'Cloudinary', 'TypeScript', 'TipTap', 'GraphQL'],
-        liveUrl: 'https://github.com',
-        githubUrl: 'https://github.com',
-        category: 'Full Stack',
-        icon: '✍️',
+        githubUrl: 'https://github.com/Zidane-Aboukhalid',
+        category: 'Desktop',
+        icon: '✂️',
         gradient: 'linear-gradient(135deg, #10b981, #06b6d4)',
         featured: false,
         challenges:
-            'Designing a permission model flexible enough for multi-tenant content ownership without per-row SQL overhead.',
+            'Designing an intuitive desktop UI for non-technical staff while handling concurrent appointment booking and real-time inventory updates.',
         outcome:
-            'Adopted by 3 internal teams; reduced time-to-publish for new articles by 60% compared to the previous Wordpress setup.',
+            'Fully operational management system adopted by the barbershop, eliminating paper-based booking and reducing billing errors.',
     },
     {
-        id: 'pipelinebot',
-        title: 'PipelineBot — GitHub Actions Automation',
+        id: 'python-android-generator',
+        title: 'Python Generator for Android Studio Apps',
         shortDesc:
-            'A GitHub App that auto-generates optimised CI/CD pipelines based on project-type detection.',
+            'Python script that reads a JSON definition and auto-generates Android Studio widget code, outputting APK and AAB files for Google Play Store.',
         longDesc:
-            'PipelineBot analyses repository structure (package.json, .csproj, pyproject.toml, etc.) and emits tailored GitHub Actions YAML files for Next.js, .NET, Python, and Go projects. Built as a Node.js + TypeScript GitHub App using the Octokit SDK.',
-        technologies: ['Node.js', 'TypeScript', 'GitHub API', 'Octokit', 'Docker', 'GitHub Actions'],
+            'A developer productivity tool written in Python that automates Android Studio app scaffolding. It reads a structured JSON configuration file describing the app\'s UI widgets, screens, and logic, then generates the corresponding Java/Kotlin code ready for Android Studio. The output includes both APK and AAB builds compatible with Google Play Store submission.',
+        technologies: ['Python', 'Java', 'Android Studio', 'JSON', 'Google Play Store'],
         liveUrl: null,
-        githubUrl: 'https://github.com',
-        category: 'DevOps',
+        githubUrl: 'https://github.com/Zidane-Aboukhalid',
+        category: 'Mobile',
         icon: '🤖',
         gradient: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
         featured: false,
         challenges:
-            'Gracefully handling monorepos with mixed technology stacks and ensuring generated pipelines do not conflict with existing workflow files.',
+            'Parsing diverse JSON widget configurations and generating syntactically correct, idiomatic Android code that compiles without errors across different layouts.',
         outcome:
-            'Saves an average of 2–4 hours of DevOps setup per new repository in a 50-repo organisation.',
+            'Saved hours of repetitive Android boilerplate per project. Successfully generated and published apps to Google Play Store.',
+    },
+    {
+        id: 'wincep-website',
+        title: 'Wincep Services Group – Corporate Website',
+        shortDesc:
+            'Corporate website with subscription management, built with PHP backend and MySQL database for Wincep Services Group.',
+        longDesc:
+            'Developed the official corporate website for Wincep Services Group, featuring a dynamic content management system, subscription plan management, and a client portal. Built with PHP Native on the backend with MySQL as the database, and a responsive HTML/CSS/JavaScript frontend using Bootstrap.',
+        technologies: ['PHP', 'MySQL', 'HTML5', 'CSS3', 'JavaScript', 'Bootstrap'],
+        liveUrl: null,
+        githubUrl: 'https://github.com/Zidane-Aboukhalid',
+        category: 'Full Stack',
+        icon: '🌐',
+        gradient: 'linear-gradient(135deg, #f97316, #f59e0b)',
+        featured: false,
+        challenges:
+            'Building a flexible subscription management system in pure PHP that handles plan upgrades, billing cycles, and client notifications.',
+        outcome:
+            'Delivered a professional corporate web presence with an integrated subscription system, improving Wincep\'s client management workflow.',
     },
 ];
 
@@ -148,236 +167,741 @@ export interface BlogPost {
     category: string;
     icon: string;
     gradient: string;
-    content: string; // simplified plain-text / markdown-like content
+    content: string;
 }
 
 export const blogPosts: BlogPost[] = [
     {
-        slug: 'mastering-aspnet-core-apis',
-        title: 'Mastering ASP.NET Core APIs: From Zero to Production',
+        slug: 'clean-architecture-aspnet-core',
+        title: 'Clean Architecture in ASP.NET Core 8: A Developer\'s Practical Guide',
         description:
-            'A comprehensive guide covering REST API design, JWT auth, rate limiting, caching, and deploying to Azure with a production-ready .NET 8 setup.',
-        date: 'Feb 12, 2026',
-        readTime: '12 min read',
+            'How to structure your ASP.NET Core 8 project using Clean Architecture — layers, dependencies, and real-world patterns I use in production.',
+        date: 'Feb 20, 2026',
+        readTime: '11 min read',
         category: '.NET',
         icon: '⚡',
         gradient: 'linear-gradient(135deg, #a855f7, #6366f1)',
-        content: `## Overview
+        content: `## What is Clean Architecture?
 
-Building production-ready REST APIs with ASP.NET Core 8 requires a solid foundation in several key areas: clean architecture, security, caching, and automated deployment.
+Clean Architecture, popularised by Robert C. Martin (Uncle Bob), separates your application into concentric layers where dependencies always point inward. In ASP.NET Core 8, this translates to four distinct projects:
 
-## 1. Clean Architecture
+- **Domain** — Entities, value objects, domain events, interfaces
+- **Application** — Use cases, DTOs, validators (FluentValidation), CQRS commands/queries
+- **Infrastructure** — EF Core repositories, external service implementations, email, storage
+- **API** — Controllers, middleware, filters, DI registration
 
-Start with a layered solution:
+## The Dependency Rule
 
-- **API** — HTTP layer: controllers, middleware, filters
-- **Application** — use cases, DTOs, validators (FluentValidation)
-- **Domain** — entities, value objects, domain events
-- **Infrastructure** — EF Core repositories, external services
+> Inner layers must never reference outer layers.
 
-## 2. JWT Authentication
+Your \`Domain\` project has **zero** external NuGet dependencies. Your \`Application\` project depends only on \`Domain\`. Infrastructure depends on Application to implement its interfaces.
 
-Use the built-in bearer middleware with \`Microsoft.AspNetCore.Authentication.JwtBearer\`. Key settings:
+## Setting Up the Solution
 
-- \`ValidateIssuerSigningKey\` = true
-- Use asymmetric RS256 keys in production, not HMAC
-- Keep access tokens short-lived (15 min); use Redis-backed refresh tokens
+\`\`\`bash
+dotnet new sln -n MyApp
+dotnet new classlib -n MyApp.Domain
+dotnet new classlib -n MyApp.Application
+dotnet new classlib -n MyApp.Infrastructure
+dotnet new webapi -n MyApp.API
 
-## 3. Rate Limiting (.NET 8 Built-in)
-
-\`\`\`csharp
-builder.Services.AddRateLimiter(opts => {
-    opts.AddFixedWindowLimiter("api", o => {
-        o.PermitLimit = 100;
-        o.Window = TimeSpan.FromMinutes(1);
-    });
-});
+dotnet sln add **/*.csproj
 \`\`\`
 
-Enable per-user rate limiting by extracting the user claim in a custom policy.
-
-## 4. Response Caching with Redis
-
-Cache expensive GET responses with \`OutputCache\` + a Redis provider:
+## Domain Layer — Pure C# Entities
 
 \`\`\`csharp
-[OutputCache(PolicyName = "products", Duration = 60)]
-[HttpGet("products")]
-public async Task<IActionResult> GetProducts() { ... }
+// Domain/Entities/WorkOrder.cs
+public class WorkOrder
+{
+    public Guid Id { get; private set; }
+    public string Title { get; private set; }
+    public WorkOrderStatus Status { get; private set; }
+
+    private WorkOrder() { }
+
+    public static WorkOrder Create(string title)
+    {
+        return new WorkOrder
+        {
+            Id = Guid.NewGuid(),
+            Title = title,
+            Status = WorkOrderStatus.Open
+        };
+    }
+
+    public void Complete() => Status = WorkOrderStatus.Completed;
+}
 \`\`\`
 
-## 5. Production Deployment on Azure Container Apps
+## Application Layer — CQRS with MediatR
 
-GitHub Actions workflow builds a multi-stage Docker image, pushes it to ACR, and triggers a rolling deployment with zero downtime. Use Azure Key Vault references for secrets rather than environment variables.
+\`\`\`csharp
+// Application/WorkOrders/Commands/CreateWorkOrder.cs
+public record CreateWorkOrderCommand(string Title) : IRequest<Guid>;
+
+public class CreateWorkOrderHandler : IRequestHandler<CreateWorkOrderCommand, Guid>
+{
+    private readonly IWorkOrderRepository _repo;
+
+    public CreateWorkOrderHandler(IWorkOrderRepository repo) => _repo = repo;
+
+    public async Task<Guid> Handle(CreateWorkOrderCommand request, CancellationToken ct)
+    {
+        var order = WorkOrder.Create(request.Title);
+        await _repo.AddAsync(order, ct);
+        return order.Id;
+    }
+}
+\`\`\`
+
+## Infrastructure Layer — EF Core Implementation
+
+\`\`\`csharp
+// Infrastructure/Repositories/WorkOrderRepository.cs
+public class WorkOrderRepository : IWorkOrderRepository
+{
+    private readonly AppDbContext _ctx;
+    public WorkOrderRepository(AppDbContext ctx) => _ctx = ctx;
+
+    public async Task AddAsync(WorkOrder entity, CancellationToken ct)
+    {
+        await _ctx.WorkOrders.AddAsync(entity, ct);
+        await _ctx.SaveChangesAsync(ct);
+    }
+}
+\`\`\`
 
 ## Key Takeaways
 
-1. Separate concerns with Clean Architecture from day one
-2. Never store secrets in appsettings.json
-3. Rate-limit all public endpoints
-4. Cache reads aggressively, invalidate on write
-5. Automate everything — a deployment should be a git push`,
+1. **Domain stays pure** — no EF Core, no ASP.NET, no frameworks
+2. **Interfaces live in Application** — Infrastructure implements them
+3. **CQRS + MediatR** decouples commands from queries cleanly
+4. **Dependency injection** wires everything together in the API layer
+5. **Testability** is free — mock the interfaces, test use cases in isolation`,
     },
     {
-        slug: 'react-performance-optimization',
-        title: 'React Performance Deep Dive: Memoisation & Virtualisation',
+        slug: 'cqrs-mediatr-dotnet',
+        title: 'CQRS & MediatR in .NET: Commands, Queries and Pipeline Behaviours',
         description:
-            'Explore advanced React optimisation techniques including React.memo, useMemo, useCallback, react-window virtual lists, and Profiler-driven debugging.',
-        date: 'Jan 28, 2026',
-        readTime: '9 min read',
-        category: 'React',
-        icon: '⚛️',
-        gradient: 'linear-gradient(135deg, #06b6d4, #3b82f6)',
-        content: `## Why React Performance Matters
+            'A deep dive into the CQRS pattern with MediatR in .NET — how I use it in real projects, with pipeline behaviours for validation and logging.',
+        date: 'Feb 10, 2026',
+        readTime: '10 min read',
+        category: '.NET',
+        icon: '🔄',
+        gradient: 'linear-gradient(135deg, #3b82f6, #06b6d4)',
+        content: `## Why CQRS?
 
-Large React applications accumulate unnecessary re-renders over time. A 200 ms interaction delay feels instant on localhost but catastrophic in production, especially on mid-range mobile devices.
+CQRS (Command Query Responsibility Segregation) splits your application operations into two categories:
 
-## The Golden Rule
+- **Commands** — change state (Create, Update, Delete)
+- **Queries** — read state, never mutate
 
-**Measure first. Optimise second.** Open React DevTools Profiler and record a slow interaction. Look for components with long render times or high commit count before reaching for \`memo\`.
+This separation makes code easier to reason about, scale, and test. Combined with MediatR, it removes direct coupling between your API controllers and business logic.
 
-## 1. React.memo — Shallow Prop Equality
+## MediatR Setup
 
-\`\`\`tsx
-const Row = React.memo(({ item }: { item: Item }) => (
-  <div className="row">{item.name}</div>
-));
+\`\`\`bash
+dotnet add package MediatR
+dotnet add package MediatR.Extensions.Microsoft.DependencyInjection
 \`\`\`
 
-React.memo prevents re-render when props are shallowly equal. It has a small overhead — only apply it to components that render frequently with stable props.
-
-## 2. useMemo — Expensive Computations
-
-\`\`\`tsx
-const sorted = useMemo(
-  () => [...items].sort((a, b) => a.score - b.score),
-  [items]
-);
+\`\`\`csharp
+// Program.cs
+builder.Services.AddMediatR(cfg =>
+    cfg.RegisterServicesFromAssembly(typeof(ApplicationAssembly).Assembly));
 \`\`\`
 
-Use \`useMemo\` for transformations that are genuinely expensive (>1 ms). Avoid wrapping cheap calculations — the dependency comparison cost can exceed the computation cost.
+## Commands — Mutating State
 
-## 3. useCallback — Stable Function References
+\`\`\`csharp
+// Command
+public record CreateAssetCommand(string Name, string SerialNumber) : IRequest<Guid>;
 
-\`\`\`tsx
-const handleDelete = useCallback((id: string) => {
-  dispatch({ type: 'DELETE', id });
-}, [dispatch]);
+// Handler
+public class CreateAssetHandler : IRequestHandler<CreateAssetCommand, Guid>
+{
+    private readonly IAssetRepository _repo;
+
+    public CreateAssetHandler(IAssetRepository repo) => _repo = repo;
+
+    public async Task<Guid> Handle(CreateAssetCommand cmd, CancellationToken ct)
+    {
+        var asset = Asset.Create(cmd.Name, cmd.SerialNumber);
+        await _repo.AddAsync(asset, ct);
+        return asset.Id;
+    }
+}
 \`\`\`
 
-Stable references prevent child memos from invalidating. Most useful when passing callbacks to memoised children or effect dependency arrays.
+## Queries — Reading State
 
-## 4. Virtual Lists with react-window
+\`\`\`csharp
+// Query
+public record GetAssetByIdQuery(Guid AssetId) : IRequest<AssetDto>;
 
-Render only visible rows for lists with 500+ items:
+// Handler  
+public class GetAssetByIdHandler : IRequestHandler<GetAssetByIdQuery, AssetDto>
+{
+    private readonly IAssetReadRepository _repo;
 
-\`\`\`tsx
-import { FixedSizeList as List } from 'react-window';
+    public GetAssetByIdHandler(IAssetReadRepository repo) => _repo = repo;
 
-<List height={600} itemCount={items.length} itemSize={50} width="100%">
-  {({ index, style }) => <Row style={style} item={items[index]} />}
-</List>
+    public async Task<AssetDto> Handle(GetAssetByIdQuery query, CancellationToken ct)
+        => await _repo.GetByIdAsync(query.AssetId, ct)
+           ?? throw new NotFoundException(nameof(Asset), query.AssetId);
+}
 \`\`\`
 
-## 5. Code Splitting with next/dynamic
+## Pipeline Behaviours — Cross-Cutting Concerns
 
-\`\`\`tsx
-const HeavyChart = dynamic(() => import('@/components/HeavyChart'), {
-  loading: () => <Skeleton />,
-});
+Pipeline behaviours are MediatR middleware. Add validation + logging without touching handlers:
+
+\`\`\`csharp
+// Validation behaviour with FluentValidation
+public class ValidationBehaviour<TRequest, TResponse>
+    : IPipelineBehavior<TRequest, TResponse>
+    where TRequest : IRequest<TResponse>
+{
+    private readonly IEnumerable<IValidator<TRequest>> _validators;
+
+    public ValidationBehaviour(IEnumerable<IValidator<TRequest>> validators)
+        => _validators = validators;
+
+    public async Task<TResponse> Handle(TRequest request,
+        RequestHandlerDelegate<TResponse> next, CancellationToken ct)
+    {
+        if (_validators.Any())
+        {
+            var ctx = new ValidationContext<TRequest>(request);
+            var failures = _validators
+                .Select(v => v.Validate(ctx))
+                .SelectMany(r => r.Errors)
+                .Where(f => f != null)
+                .ToList();
+
+            if (failures.Any())
+                throw new ValidationException(failures);
+        }
+
+        return await next();
+    }
+}
 \`\`\`
 
-Route-level splitting happens automatically with the App Router. Component-level splitting is for client-heavy components loaded conditionally.
+## Controller — Clean and Thin
 
-## Summary Table
+\`\`\`csharp
+[ApiController]
+[Route("api/[controller]")]
+public class AssetsController : ControllerBase
+{
+    private readonly IMediator _mediator;
+    public AssetsController(IMediator mediator) => _mediator = mediator;
 
-| Technique | When to Use |
-|---|---|
-| React.memo | Frequently rendered leaf components |
-| useMemo | Expensive transforms (sort, filter, derive) |
-| useCallback | Stable callback refs for memoised children |
-| react-window | Lists > 500 items |
-| dynamic() | Heavy components loaded conditionally |`,
+    [HttpPost]
+    public async Task<IActionResult> Create(CreateAssetCommand cmd)
+        => Ok(await _mediator.Send(cmd));
+
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> GetById(Guid id)
+        => Ok(await _mediator.Send(new GetAssetByIdQuery(id)));
+}
+\`\`\`
+
+## Key Takeaways
+
+1. Commands mutate state, Queries only read — never mix the two
+2. Pipeline behaviours handle cross-cutting concerns without polluting handlers
+3. Controllers stay thin — just dispatch and return
+4. Each handler is independently testable with a simple mock
+5. CQRS makes scaling reads and writes independently much easier`,
     },
     {
-        slug: 'cicd-github-actions-nextjs',
-        title: 'CI/CD for Next.js: GitHub Actions + Docker + Zero Downtime',
+        slug: 'signalr-blazor-realtime',
+        title: 'Real-Time Web Apps with SignalR and Blazor Server in .NET',
         description:
-            'Set up a professional CI/CD pipeline: automated testing, Docker multi-stage builds, container registry, and rolling deployments on a VPS.',
-        date: 'Jan 10, 2026',
-        readTime: '15 min read',
-        category: 'DevOps',
-        icon: '🚀',
-        gradient: 'linear-gradient(135deg, #10b981, #06b6d4)',
-        content: `## The Goal
+            'How I built a real-time recruitment platform using Blazor Server and SignalR — architecture decisions, hub design, and deployment on VPS with Docker.',
+        date: 'Jan 25, 2026',
+        readTime: '12 min read',
+        category: '.NET',
+        icon: '📡',
+        gradient: 'linear-gradient(135deg, #8b5cf6, #ec4899)',
+        content: `## Why Blazor Server + SignalR?
 
-Every \`git push\` to \`main\` should automatically: run tests → build a Docker image → push to registry → deploy to VPS with zero downtime. Total pipeline time: under 3 minutes.
+When I built the recruitment platform at Telco Solution, the requirement was clear: real-time notifications for new job applications, interview status changes, and live candidate tracking. Blazor Server already runs over a SignalR connection for its UI updates — adding application-level real-time events was a natural fit.
 
-## 1. Multi-Stage Dockerfile
+## Blazor Server vs Blazor WASM
 
-Multi-stage builds keep the final image small (<200 MB):
+| Feature | Blazor Server | Blazor WASM |
+|---|---|---|
+| Initial load | Fast | Slow (downloads runtime) |
+| Latency | Requires connection | Offline-capable |
+| Server resources | Higher (stateful) | Minimal |
+| Real-time | Native (SignalR) | Manual WebSocket |
+
+For an internal HR tool, Blazor Server was the right choice.
+
+## Setting Up SignalR Hub
+
+\`\`\`csharp
+// Hubs/RecruitmentHub.cs
+[Authorize]
+public class RecruitmentHub : Hub
+{
+    public async Task JoinRoom(string roomId)
+        => await Groups.AddToGroupAsync(Context.ConnectionId, roomId);
+
+    public async Task LeaveRoom(string roomId)
+        => await Groups.RemoveFromGroupAsync(Context.ConnectionId, roomId);
+}
+\`\`\`
+
+\`\`\`csharp
+// Program.cs
+builder.Services.AddSignalR();
+app.MapHub<RecruitmentHub>("/hubs/recruitment");
+\`\`\`
+
+## Broadcasting from Application Services
+
+\`\`\`csharp
+public class ApplicationService
+{
+    private readonly IHubContext<RecruitmentHub> _hub;
+    private readonly IApplicationRepository _repo;
+
+    public ApplicationService(
+        IHubContext<RecruitmentHub> hub,
+        IApplicationRepository repo)
+    {
+        _hub = hub;
+        _repo = repo;
+    }
+
+    public async Task SubmitApplicationAsync(CreateApplicationDto dto)
+    {
+        var application = await _repo.CreateAsync(dto);
+
+        // Notify all HR staff in the HR group
+        await _hub.Clients
+            .Group("hr-team")
+            .SendAsync("NewApplication", new {
+                application.Id,
+                application.CandidateName,
+                application.Position,
+                application.SubmittedAt
+            });
+    }
+}
+\`\`\`
+
+## Blazor Component — Receiving Events
+
+\`\`\`csharp
+@page "/dashboard"
+@inject NavigationManager Navigation
+@implements IAsyncDisposable
+
+<div class="applications-list">
+    @foreach (var app in _applications)
+    {
+        <div class="application-card @(app.IsNew ? "highlight" : "")">
+            <span>@app.CandidateName</span>
+            <span>@app.Position</span>
+        </div>
+    }
+</div>
+
+@code {
+    private HubConnection? _hubConnection;
+    private List<ApplicationDto> _applications = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _hubConnection = new HubConnectionBuilder()
+            .WithUrl(Navigation.ToAbsoluteUri("/hubs/recruitment"))
+            .WithAutomaticReconnect()
+            .Build();
+
+        _hubConnection.On<ApplicationNotification>("NewApplication", async (notification) =>
+        {
+            _applications.Insert(0, new ApplicationDto
+            {
+                Id = notification.Id,
+                CandidateName = notification.CandidateName,
+                Position = notification.Position,
+                IsNew = true
+            });
+            await InvokeAsync(StateHasChanged); // Trigger Blazor re-render
+        });
+
+        await _hubConnection.StartAsync();
+        await _hubConnection.InvokeAsync("JoinRoom", "hr-team");
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_hubConnection != null)
+            await _hubConnection.DisposeAsync();
+    }
+}
+\`\`\`
+
+## Deployment with Docker + Jenkins
 
 \`\`\`dockerfile
-FROM node:20-alpine AS deps
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
-COPY package*.json ./
-RUN npm ci --omit=dev
+EXPOSE 80
 
-FROM node:20-alpine AS builder
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
 COPY . .
-RUN npm run build
+RUN dotnet publish -c Release -o /app/publish
 
-FROM node:20-alpine AS runner
-WORKDIR /app
-ENV NODE_ENV=production
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
-COPY --from=builder /app/public ./public
-CMD ["node", "server.js"]
+FROM base AS final
+COPY --from=build /app/publish .
+ENTRYPOINT ["dotnet", "RecruitmentApp.dll"]
 \`\`\`
-
-Enable \`output: 'standalone'\` in \`next.config.ts\` to generate the minimal server bundle.
-
-## 2. GitHub Actions Workflow
-
-Three jobs: **test → build → deploy**, each gated on the previous:
-
-- **test**: \`npm test\` + ESLint + TypeScript check
-- **build**: \`docker build\`, tag with \`github.sha\`, push to GHCR
-- **deploy**: SSH into VPS, pull new image, run rolling restart via Docker Compose
-
-## 3. Zero Downtime with Docker Compose + Health Checks
-
-Add a health check so Docker waits for the app to be ready before taking the old container down:
-
-\`\`\`yaml
-healthcheck:
-  test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
-  interval: 10s
-  timeout: 5s
-  retries: 3
-  start_period: 30s
-\`\`\`
-
-Use \`--detach --wait\` with \`docker compose up\` so the deploy step blocks until the new container passes health checks before removing the old one.
-
-## 4. Secret Management
-
-Store secrets in GitHub Actions Secrets (SSH key, registry token, env vars). Inject at deploy time — never bake secrets into the Docker image.
-
-## 5. Nginx Reverse Proxy
-
-Sit Nginx in front of the Next.js container for TLS termination, HTTP/2, static asset caching, and as a load balancer if you scale to multiple replicas.
 
 ## Key Takeaways
 
-1. Multi-stage Docker builds dramatically reduce image size
-2. Always tag images with a unique identifier (commit SHA)
-3. Health checks are non-negotiable for zero-downtime deploys
-4. Keep secrets out of images — inject at runtime
-5. Nginx + Certbot = free, automatic HTTPS`,
+1. Blazor Server is ideal for internal dashboards needing real-time updates
+2. Use IHubContext to broadcast from your application services
+3. \`WithAutomaticReconnect()\` handles transient disconnections gracefully
+4. Always call \`InvokeAsync(StateHasChanged)\` from SignalR callbacks
+5. Docker + Jenkins makes VPS deployment reproducible and fast`,
+    },
+    {
+        slug: 'docker-jenkins-dotnet-cicd',
+        title: 'Docker + Jenkins CI/CD Pipeline for .NET Applications on VPS',
+        description:
+            'A step-by-step guide to setting up a production CI/CD pipeline for .NET apps using Jenkins and Docker on a Linux VPS — from my real-world experience at Telco Solution.',
+        date: 'Jan 12, 2026',
+        readTime: '14 min read',
+        category: 'DevOps',
+        icon: '🐳',
+        gradient: 'linear-gradient(135deg, #06b6d4, #10b981)',
+        content: `## The Goal
+
+Every git push to \`main\` triggers Jenkins to: build the .NET app → run tests → build a Docker image → deploy to VPS. This is the exact pipeline I used at Telco Solution.
+
+## Prerequisites
+
+- Linux VPS (Ubuntu 22.04)
+- Docker + Docker Compose installed
+- Jenkins installed on VPS or separate server
+- Your .NET 8 application in a Git repository
+
+## 1. Multi-Stage Dockerfile for .NET 8
+
+\`\`\`dockerfile
+# Stage 1: Build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+
+COPY ["src/MyApp.API/MyApp.API.csproj", "src/MyApp.API/"]
+COPY ["src/MyApp.Application/MyApp.Application.csproj", "src/MyApp.Application/"]
+COPY ["src/MyApp.Domain/MyApp.Domain.csproj", "src/MyApp.Domain/"]
+COPY ["src/MyApp.Infrastructure/MyApp.Infrastructure.csproj", "src/MyApp.Infrastructure/"]
+RUN dotnet restore "src/MyApp.API/MyApp.API.csproj"
+
+COPY . .
+RUN dotnet publish "src/MyApp.API/MyApp.API.csproj" -c Release -o /app/publish
+
+# Stage 2: Runtime
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+WORKDIR /app
+EXPOSE 80
+COPY --from=build /app/publish .
+ENTRYPOINT ["dotnet", "MyApp.API.dll"]
+\`\`\`
+
+## 2. docker-compose.yml
+
+\`\`\`yaml
+version: '3.8'
+
+services:
+  api:
+    image: myapp-api:latest
+    container_name: myapp-api
+    ports:
+      - "5000:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__Default=\${DB_CONNECTION_STRING}
+    depends_on:
+      - db
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      SA_PASSWORD: \${SA_PASSWORD}
+      ACCEPT_EULA: "Y"
+    volumes:
+      - sqldata:/var/opt/mssql
+    restart: unless-stopped
+
+volumes:
+  sqldata:
+\`\`\`
+
+## 3. Jenkinsfile
+
+\`\`\`groovy
+pipeline {
+    agent any
+    
+    environment {
+        IMAGE_NAME = "myapp-api"
+        CONTAINER_NAME = "myapp-api"
+        VPS_USER = "ubuntu"
+        VPS_HOST = credentials('vps-host')
+    }
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main',
+                    credentialsId: 'github-credentials',
+                    url: 'https://github.com/your-repo.git'
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                sh 'dotnet test --configuration Release --no-build'
+            }
+        }
+        
+        stage('Build Docker Image') {
+            steps {
+                sh "docker build -t \${IMAGE_NAME}:latest ."
+            }
+        }
+        
+        stage('Deploy') {
+            steps {
+                sshagent(['vps-ssh-key']) {
+                    sh """
+                        docker save \${IMAGE_NAME}:latest | \\
+                        ssh \${VPS_USER}@\${VPS_HOST} 'docker load'
+                        
+                        ssh \${VPS_USER}@\${VPS_HOST} '
+                            docker stop \${CONTAINER_NAME} || true
+                            docker rm \${CONTAINER_NAME} || true
+                            docker compose up -d --pull never
+                        '
+                    """
+                }
+            }
+        }
+    }
+    
+    post {
+        success {
+            echo '✅ Deployment successful!'
+        }
+        failure {
+            echo '❌ Pipeline failed. Check logs.'
+        }
+    }
+}
+\`\`\`
+
+## 4. Nginx Reverse Proxy
+
+\`\`\`nginx
+server {
+    listen 80;
+    server_name api.yourdomain.com;
+
+    location / {
+        proxy_pass http://localhost:5000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade \$http_upgrade;
+        proxy_set_header Connection keep-alive;
+        proxy_set_header Host \$host;
+        proxy_cache_bypass \$http_upgrade;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto \$scheme;
+    }
+}
+\`\`\`
+
+## Key Takeaways
+
+1. Multi-stage Docker builds keep images small and build dependencies out of production
+2. Health checks prevent traffic routing to unhealthy containers
+3. Never bake secrets into Docker images — use environment files or secrets manager
+4. \`docker save | ssh | docker load\` works great for VPS without a registry
+5. Nginx as reverse proxy gives you TLS, HTTP/2, and easy scaling`,
+    },
+    {
+        slug: 'odoo-erp-aspnet-integration',
+        title: 'Integrating Odoo ERP with ASP.NET Core Web API: A Practical Approach',
+        description:
+            'How I built a .NET microservice that synchronizes data with Odoo ERP using its JSON-RPC API — authentication, CRUD operations, and error handling.',
+        date: 'Dec 28, 2025',
+        readTime: '9 min read',
+        category: '.NET',
+        icon: '🔗',
+        gradient: 'linear-gradient(135deg, #10b981, #3b82f6)',
+        content: `## Background
+
+At Telco Solution, I needed to synchronize HR and sales data between our custom ASP.NET Core Web APIs and an existing Odoo ERP installation. Odoo exposes a JSON-RPC API, and here is how I integrated it cleanly.
+
+## Odoo's JSON-RPC API
+
+Odoo uses JSON-RPC 2.0 over HTTP. Authentication happens first (returns a session_id cookie), then all subsequent calls use that session.
+
+\`\`\`
+POST /web/client/authenticate  → Login, get session
+POST /web/dataset/call_kw     → CRUD operations on models
+\`\`\`
+
+## Step 1 – Create the Odoo HTTP Client
+
+\`\`\`csharp
+// Infrastructure/Odoo/OdooClient.cs
+public class OdooClient
+{
+    private readonly HttpClient _http;
+    private readonly OdooSettings _settings;
+    private string? _sessionId;
+
+    public OdooClient(HttpClient http, IOptions<OdooSettings> settings)
+    {
+        _http = http;
+        _settings = settings.Value;
+    }
+
+    public async Task AuthenticateAsync()
+    {
+        var payload = new
+        {
+            jsonrpc = "2.0",
+            method = "call",
+            id = 1,
+            @params = new
+            {
+                db = _settings.Database,
+                login = _settings.Username,
+                password = _settings.Password
+            }
+        };
+
+        var response = await _http.PostAsJsonAsync(
+            "/web/session/authenticate", payload);
+        response.EnsureSuccessStatusCode();
+
+        // Store session cookie
+        if (response.Headers.TryGetValues("Set-Cookie", out var cookies))
+        {
+            _sessionId = cookies.FirstOrDefault(c => c.StartsWith("session_id"));
+        }
+    }
+}
+\`\`\`
+
+## Step 2 – Search and Read Records
+
+\`\`\`csharp
+public async Task<List<OdooEmployee>> GetEmployeesAsync()
+{
+    var payload = new
+    {
+        jsonrpc = "2.0",
+        method = "call",
+        id = 2,
+        @params = new
+        {
+            model = "hr.employee",
+            method = "search_read",
+            args = new object[] { new object[] { } }, // Empty domain = all records
+            kwargs = new
+            {
+                fields = new[] { "id", "name", "job_title", "work_email", "department_id" },
+                limit = 100
+            }
+        }
+    };
+
+    var request = new HttpRequestMessage(HttpMethod.Post, "/web/dataset/call_kw");
+    request.Headers.Add("Cookie", _sessionId);
+    request.Content = JsonContent.Create(payload);
+
+    var response = await _http.SendAsync(request);
+    var result = await response.Content.ReadFromJsonAsync<OdooResponse<List<OdooEmployee>>>();
+    
+    return result?.Result ?? new List<OdooEmployee>();
+}
+\`\`\`
+
+## Step 3 – Register in DI with Polly Retry
+
+\`\`\`csharp
+// Program.cs
+builder.Services.Configure<OdooSettings>(
+    builder.Configuration.GetSection("Odoo"));
+
+builder.Services.AddHttpClient<OdooClient>(client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["Odoo:BaseUrl"]!);
+})
+.AddTransientHttpErrorPolicy(policy =>
+    policy.WaitAndRetryAsync(3, attempt => TimeSpan.FromSeconds(Math.Pow(2, attempt))));
+\`\`\`
+
+## Step 4 – Sync Service (CQRS Command)
+
+\`\`\`csharp
+public class SyncEmployeesCommandHandler : IRequestHandler<SyncEmployeesCommand, int>
+{
+    private readonly OdooClient _odoo;
+    private readonly IEmployeeRepository _repo;
+
+    public async Task<int> Handle(SyncEmployeesCommand cmd, CancellationToken ct)
+    {
+        await _odoo.AuthenticateAsync();
+        var odooEmployees = await _odoo.GetEmployeesAsync();
+
+        int synced = 0;
+        foreach (var odooEmp in odooEmployees)
+        {
+            var existing = await _repo.FindByOdooIdAsync(odooEmp.Id, ct);
+            if (existing is null)
+            {
+                await _repo.AddAsync(Employee.FromOdoo(odooEmp), ct);
+            }
+            else
+            {
+                existing.UpdateFrom(odooEmp);
+                await _repo.UpdateAsync(existing, ct);
+            }
+            synced++;
+        }
+
+        return synced;
+    }
+}
+\`\`\`
+
+## Key Takeaways
+
+1. Always re-authenticate if you get a 401 — Odoo sessions expire
+2. Use Polly for transient HTTP error retry logic
+3. Map Odoo models to your domain entities — don't bleed Odoo types into your domain
+4. Schedule sync via a Hangfire background job for automatic periodic updates
+5. Store the Odoo ID on your entity for idempotent upsert operations`,
     },
 ];
 

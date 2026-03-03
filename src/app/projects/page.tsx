@@ -4,7 +4,7 @@ import { projects } from '../lib/data';
 
 export const metadata: Metadata = { title: 'Projects' };
 
-const categories = ['All', 'Full Stack', 'DevOps', 'Backend'] as const;
+const categories = ['All', 'Full Stack', 'Backend', 'Desktop', 'Mobile'] as const;
 
 export default async function ProjectsPage({
     searchParams,
