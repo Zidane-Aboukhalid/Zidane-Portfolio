@@ -107,7 +107,7 @@ pipeline {
 
           echo ""
           echo "=== Smoke test ==="
-          curl -sf http://localhost:3000/ -o /dev/null \
+          curl -sf https://aboukhalid-zidane.com/ -o /dev/null \
             && echo "HTTP 200 — site is live!" \
             || echo "WARNING: site not responding yet — check logs"
         '''
