@@ -12,6 +12,10 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://aboukhalid-zidane.com'),
+  icons: {
+    icon: '/icon.svg',
+    shortcut: '/icon.svg',
+  },
   title: {
     template: '%s | Zidane Aboukhalid — Full Stack Developer',
     default: 'Zidane Aboukhalid — Full Stack .NET & React Developer',
