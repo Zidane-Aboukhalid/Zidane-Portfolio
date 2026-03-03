@@ -2,11 +2,8 @@ pipeline {
   agent any
 
   options {
-    // Only one build runs at a time — new triggers queue, never parallel
     disableConcurrentBuilds(abortPrevious: false)
-    // Keep only the last 10 builds
     buildDiscarder(logRotator(numToKeepStr: '10'))
-    // Fail the build if it runs longer than 20 minutes
     timeout(time: 20, unit: 'MINUTES')
   }
 
@@ -15,7 +12,6 @@ pipeline {
     // ── 1. Checkout ────────────────────────────────────────────────────────────
     stage('Checkout') {
       steps {
-        // Always check out a clean copy of the main branch
         checkout([
           $class           : 'GitSCM',
           branches         : [[name: 'refs/heads/main']],
@@ -25,41 +21,54 @@ pipeline {
             refspec      : '+refs/heads/main:refs/remotes/origin/main'
           ]],
           extensions: [
-            // Clean workspace before checkout so no stale files remain
+            // Wipe workspace before checkout so no stale files remain
             [$class: 'CleanBeforeCheckout'],
             [$class: 'CloneOption', noTags: true, shallow: true, depth: 1]
           ]
         ])
-        // Print the latest commit so the build log shows exactly what code is deployed
-        sh 'git log -1 --oneline'
-        sh 'git log -1 --format="Deploying commit: %H  |  %s  |  %cd" --date=short'
+        sh 'git log -1 --format="Deploying: %H | %s | %cd" --date=short'
       }
     }
 
-    // ── 2. Build & Deploy ──────────────────────────────────────────────────────
+    // ── 2. Ensure docker-compose binary exists ─────────────────────────────────
+    stage('Check docker-compose') {
+      steps {
+        sh '''
+          if ! command -v docker-compose > /dev/null 2>&1; then
+            echo "docker-compose not found — installing v2.24.5..."
+            curl -SL https://github.com/docker/compose/releases/download/v2.24.5/docker-compose-linux-x86_64 \
+              -o /usr/local/bin/docker-compose
+            chmod +x /usr/local/bin/docker-compose
+          fi
+          echo "docker-compose version: $(docker-compose version)"
+        '''
+      }
+    }
+
+    // ── 3. Build & Deploy ──────────────────────────────────────────────────────
     stage('Build & Deploy') {
       steps {
         sh '''
-          # ── Stop & remove the old container completely ─────────────────────
-          docker compose down --remove-orphans --timeout 30 || true
+          # ── Stop & remove old container ───────────────────────────────────
+          docker-compose down --remove-orphans || true
           docker rm -f portfolio_app 2>/dev/null || true
 
-          # ── Remove old image to guarantee a FRESH build picks up new code ──
-          # Without this, Docker layer cache can serve stale code.
+          # ── Remove old image so Docker does NOT use stale layer cache ─────
+          # This is the key fix: without this, new code changes are ignored.
           docker rmi -f portfolio-app 2>/dev/null || true
+          # Also try the compose-generated image name pattern
+          docker rmi -f portfolio_portfolio-app 2>/dev/null || true
 
-          # ── Build new image and start container ────────────────────────────
-          # --build   → always rebuild the image (never skip the build step)
-          # --no-deps → skip dependency services (none here, but safer)
-          docker compose up -d --build
+          # ── Build fresh image and start container ─────────────────────────
+          docker-compose up -d --build
 
-          # ── Wait until the container is healthy ───────────────────────────
-          echo "Waiting for container to become healthy..."
+          # ── Wait up to 2 minutes for container to become healthy ──────────
+          echo "Waiting for container health..."
           for i in $(seq 1 12); do
-            STATUS=$(docker inspect --format="{{.State.Health.Status}}" portfolio_app 2>/dev/null || echo "unknown")
-            echo "  Attempt $i/12 — status: $STATUS"
+            STATUS=$(docker inspect --format="{{.State.Health.Status}}" portfolio_app 2>/dev/null || echo "starting")
+            echo "  Check $i/12 — status: $STATUS"
             if [ "$STATUS" = "healthy" ]; then
-              echo "✅ Container is healthy!"
+              echo "Container is healthy!"
               break
             fi
             sleep 10
@@ -68,28 +77,28 @@ pipeline {
       }
     }
 
-    // ── 3. Configure VPS Nginx ─────────────────────────────────────────────────
+    // ── 4. Configure VPS Nginx ─────────────────────────────────────────────────
     stage('Configure Nginx') {
       steps {
         sh '''
           if [ -d /etc/nginx/conf.d ]; then
             cp nginx/vps-nginx.conf /etc/nginx/conf.d/portfolio.conf
-            echo "Nginx config deployed to conf.d"
+            echo "Deployed to conf.d"
           elif [ -d /etc/nginx/sites-available ]; then
             mkdir -p /etc/nginx/sites-available /etc/nginx/sites-enabled
             cp nginx/vps-nginx.conf /etc/nginx/sites-available/portfolio
             ln -sf /etc/nginx/sites-available/portfolio /etc/nginx/sites-enabled/portfolio
             rm -f /etc/nginx/sites-enabled/default || true
-            echo "Nginx config deployed to sites-available"
+            echo "Deployed to sites-available"
           else
-            echo "WARNING: Could not find nginx config directory — configure manually"
+            echo "WARNING: Nginx config directory not found"
           fi
           nginx -t && systemctl reload nginx || service nginx reload || true
         '''
       }
     }
 
-    // ── 4. Verify ─────────────────────────────────────────────────────────────
+    // ── 5. Verify ─────────────────────────────────────────────────────────────
     stage('Verify') {
       steps {
         sh '''
@@ -97,15 +106,10 @@ pipeline {
           docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
 
           echo ""
-          echo "=== Health check ==="
-          STATUS=$(docker inspect --format="{{.State.Health.Status}}" portfolio_app 2>/dev/null || echo "no healthcheck")
-          echo "portfolio_app health: $STATUS"
-
-          echo ""
-          echo "=== Smoke test (HTTP 200?) ==="
+          echo "=== Smoke test ==="
           curl -sf http://localhost:3000/ -o /dev/null \
-            && echo "✅ HTTP 200 — site is responding" \
-            || echo "⚠️  Site not yet responding — check logs below"
+            && echo "HTTP 200 — site is live!" \
+            || echo "WARNING: site not responding yet — check logs"
         '''
       }
     }
@@ -114,16 +118,13 @@ pipeline {
 
   post {
     always {
-      sh '''
-        echo "=== Last 50 lines of container logs ==="
-        docker logs --tail=50 portfolio_app 2>/dev/null || true
-      '''
+      sh 'docker logs --tail=60 portfolio_app 2>/dev/null || true'
     }
     success {
-      echo '✅ Deployment successful — portfolio is live!'
+      echo 'Deployment successful — portfolio is live!'
     }
     failure {
-      echo '❌ Pipeline failed — review the logs above for details.'
+      echo 'Pipeline failed — check the logs above.'
     }
   }
 }
