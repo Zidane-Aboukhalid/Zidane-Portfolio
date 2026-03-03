@@ -2,13 +2,20 @@ pipeline {
   agent any
 
   options {
-    // Only one build runs at a time — new triggers queue up (FIFO), never run in parallel
+    // Only one build runs at a time — new triggers queue, never parallel
     disableConcurrentBuilds(abortPrevious: false)
+    // Keep only the last 10 builds
+    buildDiscarder(logRotator(numToKeepStr: '10'))
+    // Fail the build if it runs longer than 20 minutes
+    timeout(time: 20, unit: 'MINUTES')
   }
 
   stages {
-    stage('Checkout code') {
+
+    // ── 1. Checkout ────────────────────────────────────────────────────────────
+    stage('Checkout') {
       steps {
+        // Always check out a clean copy of the main branch
         checkout([
           $class           : 'GitSCM',
           branches         : [[name: 'refs/heads/main']],
@@ -17,34 +24,54 @@ pipeline {
             credentialsId: 'token_Jenkins',
             refspec      : '+refs/heads/main:refs/remotes/origin/main'
           ]],
-          extensions       : [
+          extensions: [
+            // Clean workspace before checkout so no stale files remain
+            [$class: 'CleanBeforeCheckout'],
             [$class: 'CloneOption', noTags: true, shallow: true, depth: 1]
           ]
         ])
+        // Print the latest commit so the build log shows exactly what code is deployed
         sh 'git log -1 --oneline'
+        sh 'git log -1 --format="Deploying commit: %H  |  %s  |  %cd" --date=short'
       }
     }
 
-    stage('Deploy') {
+    // ── 2. Build & Deploy ──────────────────────────────────────────────────────
+    stage('Build & Deploy') {
       steps {
         sh '''
-          # ── Install docker-compose v2 if not present ──────────────────────
-          if ! command -v docker-compose > /dev/null 2>&1; then
-            echo "docker-compose not found — installing v2 binary..."
-            curl -SL https://github.com/docker/compose/releases/download/v2.24.5/docker-compose-linux-x86_64 \
-              -o /usr/local/bin/docker-compose
-            chmod +x /usr/local/bin/docker-compose
-            echo "Installed: $(docker-compose version)"
-          fi
-
-          # ── Deploy Next.js container ──────────────────────────────────────
-          docker-compose down --remove-orphans || true
-          # Force-remove the named container in case it is stopped but not yet gone
+          # ── Stop & remove the old container completely ─────────────────────
+          docker compose down --remove-orphans --timeout 30 || true
           docker rm -f portfolio_app 2>/dev/null || true
-          docker-compose up -d --build
 
-          # ── Configure VPS host Nginx to proxy → container:3000 ────────────
-          # Support both Ubuntu (sites-available) and CentOS/Alpine (conf.d)
+          # ── Remove old image to guarantee a FRESH build picks up new code ──
+          # Without this, Docker layer cache can serve stale code.
+          docker rmi -f portfolio-app 2>/dev/null || true
+
+          # ── Build new image and start container ────────────────────────────
+          # --build   → always rebuild the image (never skip the build step)
+          # --no-deps → skip dependency services (none here, but safer)
+          docker compose up -d --build
+
+          # ── Wait until the container is healthy ───────────────────────────
+          echo "Waiting for container to become healthy..."
+          for i in $(seq 1 12); do
+            STATUS=$(docker inspect --format="{{.State.Health.Status}}" portfolio_app 2>/dev/null || echo "unknown")
+            echo "  Attempt $i/12 — status: $STATUS"
+            if [ "$STATUS" = "healthy" ]; then
+              echo "✅ Container is healthy!"
+              break
+            fi
+            sleep 10
+          done
+        '''
+      }
+    }
+
+    // ── 3. Configure VPS Nginx ─────────────────────────────────────────────────
+    stage('Configure Nginx') {
+      steps {
+        sh '''
           if [ -d /etc/nginx/conf.d ]; then
             cp nginx/vps-nginx.conf /etc/nginx/conf.d/portfolio.conf
             echo "Nginx config deployed to conf.d"
@@ -62,21 +89,41 @@ pipeline {
       }
     }
 
-    stage('Check Running Containers') {
+    // ── 4. Verify ─────────────────────────────────────────────────────────────
+    stage('Verify') {
       steps {
-        sh 'docker ps'
+        sh '''
+          echo "=== Running containers ==="
+          docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
+
+          echo ""
+          echo "=== Health check ==="
+          STATUS=$(docker inspect --format="{{.State.Health.Status}}" portfolio_app 2>/dev/null || echo "no healthcheck")
+          echo "portfolio_app health: $STATUS"
+
+          echo ""
+          echo "=== Smoke test (HTTP 200?) ==="
+          curl -sf http://localhost:3000/ -o /dev/null \
+            && echo "✅ HTTP 200 — site is responding" \
+            || echo "⚠️  Site not yet responding — check logs below"
+        '''
       }
     }
 
   }
+
   post {
     always {
-      sh 'docker-compose logs || true'
+      sh '''
+        echo "=== Last 50 lines of container logs ==="
+        docker logs --tail=50 portfolio_app 2>/dev/null || true
+      '''
     }
-
     success {
-      echo 'Application déployée avec succès et reste active sur le serveur.'
+      echo '✅ Deployment successful — portfolio is live!'
     }
-
+    failure {
+      echo '❌ Pipeline failed — review the logs above for details.'
+    }
   }
 }
