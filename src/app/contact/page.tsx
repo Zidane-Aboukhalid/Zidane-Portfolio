@@ -17,8 +17,8 @@ const socialLinks = [
     },
     {
         name: 'Email',
-        href: 'mailto:zidane.aboukhalid@gmail.com',
-        detail: 'zidane.aboukhalid@gmail.com',
+        href: 'mailto:contact@aboukhalid-zidane.com',
+        detail: 'contact@aboukhalid-zidane.com',
         color: '#06b6d4',
         icon: (
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
