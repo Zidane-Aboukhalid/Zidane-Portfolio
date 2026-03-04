@@ -19,7 +19,7 @@ services:
       - HOSTNAME=0.0.0.0
       # ── Contact form SMTP ──────────────────────────────────
       - SMTP_HOST=mail.aboukhalid-zidane.com
-      - SMTP_PORT=587
+      - SMTP_PORT=465
       - SMTP_SECURE=true
       - SMTP_USER=contact@aboukhalid-zidane.com
       - SMTP_PASSWORD=ZiDane@12
