@@ -1,38 +1,46 @@
 import type { MetadataRoute } from 'next';
 import { projects, blogPosts } from './lib/data';
 
+/** Parse "Feb 20, 2026" → Date object, fallback to today */
+function parsePostDate(dateStr: string): Date {
+    const parsed = new Date(dateStr);
+    return isNaN(parsed.getTime()) ? new Date() : parsed;
+}
+
+/** Stable build date for static + project pages (not dynamic per-request) */
+const SITE_UPDATED = new Date('2026-02-20');
+
 export default function sitemap(): MetadataRoute.Sitemap {
     const baseUrl = 'https://aboukhalid-zidane.com';
-    const now = new Date();
 
     const staticRoutes: MetadataRoute.Sitemap = [
         {
             url: baseUrl,
-            lastModified: now,
+            lastModified: SITE_UPDATED,
             changeFrequency: 'monthly',
             priority: 1.0,
         },
         {
             url: `${baseUrl}/about`,
-            lastModified: now,
+            lastModified: SITE_UPDATED,
             changeFrequency: 'monthly',
             priority: 0.8,
         },
         {
             url: `${baseUrl}/projects`,
-            lastModified: now,
+            lastModified: SITE_UPDATED,
             changeFrequency: 'weekly',
             priority: 0.9,
         },
         {
             url: `${baseUrl}/blog`,
-            lastModified: now,
+            lastModified: SITE_UPDATED,
             changeFrequency: 'weekly',
             priority: 0.9,
         },
         {
             url: `${baseUrl}/contact`,
-            lastModified: now,
+            lastModified: SITE_UPDATED,
             changeFrequency: 'yearly',
             priority: 0.7,
         },
@@ -40,14 +48,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
     const projectRoutes: MetadataRoute.Sitemap = projects.map((project) => ({
         url: `${baseUrl}/projects/${project.id}`,
-        lastModified: now,
+        lastModified: SITE_UPDATED,
         changeFrequency: 'monthly' as const,
-        priority: 0.7,
+        priority: project.featured ? 0.8 : 0.7,
     }));
 
     const blogRoutes: MetadataRoute.Sitemap = blogPosts.map((post) => ({
         url: `${baseUrl}/blog/${post.slug}`,
-        lastModified: now,
+        lastModified: parsePostDate(post.date),
         changeFrequency: 'monthly' as const,
         priority: 0.8,
     }));
